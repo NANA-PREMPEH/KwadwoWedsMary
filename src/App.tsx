@@ -363,6 +363,9 @@ export default function App() {
     try {
       const { authenticated } = await weddingApi.getAdminSession();
       if (authenticated) {
+        void weddingApi.getPhotos().then((databasePhotos) => {
+          if (databasePhotos.length > 0) setPhotos(databasePhotos);
+        }).catch(() => {});
         setIsAdminOpen(true);
         return;
       }
@@ -376,6 +379,9 @@ export default function App() {
     const { authenticated } = await weddingApi.loginAdmin(email, password);
     if (!authenticated) throw new Error('Incorrect email or password.');
     setIsAdminLoginOpen(false);
+    void weddingApi.getPhotos().then((databasePhotos) => {
+      if (databasePhotos.length > 0) setPhotos(databasePhotos);
+    }).catch(() => {});
     setIsAdminOpen(true);
   };
 

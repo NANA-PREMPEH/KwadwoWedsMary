@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RsvpEntry, SeatingTable, WeddingAnnouncement, WeddingDetails, SongSuggestion, WeddingPhoto } from '../types/wedding';
-import { X, Users, CheckCircle, XCircle, Utensils, Music, Download, Search, Settings, ShieldCheck, HeartHandshake, LogOut } from 'lucide-react';
+import { X, Users, CheckCircle, XCircle, Utensils, Music, Download, Search, Settings, ShieldCheck, HeartHandshake, LogOut, Bell } from 'lucide-react';
 
 interface OrganizerDashboardProps {
   isOpen: boolean;
@@ -40,6 +40,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
   const [activeTab, setActiveTab] = useState<'guests' | 'dietary' | 'playlist' | 'photos' | 'seating' | 'announcements' | 'settings'>('guests');
   const [announcementTitle, setAnnouncementTitle] = useState('');
   const [announcementMessage, setAnnouncementMessage] = useState('');
+  const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [editingNames, setEditingNames] = useState(details.coupleNames);
   const [editingDate, setEditingDate] = useState(details.date);
@@ -135,6 +136,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
     r.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     r.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const pendingPhotos = photos.filter((photo) => photo.moderationStatus === 'pending');
   const assignGuest = (rsvp: RsvpEntry, tableId: string) => {
     onUpdateTables(tables.map((table) => ({
       ...table,
@@ -165,13 +167,21 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="relative flex items-center gap-1">
+            <button onClick={() => setShowNotifications((open) => !open)} className="relative rounded-lg p-2 text-[#0F5132] transition hover:bg-[#0F5132]/10" aria-label="Pending photo notifications">
+              <Bell className="h-4 w-4" />
+              {pendingPhotos.length > 0 && <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#C85A17] px-1 text-[9px] font-bold text-white">{pendingPhotos.length}</span>}
+            </button>
             <button onClick={onLogout} className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-[#C85A17] hover:bg-[#C85A17]/10" title="Sign out of the admin portal">
               <LogOut className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Logout</span>
             </button>
             <button onClick={onClose} className="p-2 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-200/50 cursor-pointer" aria-label="Close admin portal">
               <X className="w-5 h-5" />
             </button>
+            {showNotifications && <div className="absolute right-16 top-11 z-20 w-80 rounded-xl border border-[#E7C56A]/40 bg-white p-3 shadow-2xl">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#C85A17]">Photo approvals</p>
+              {pendingPhotos.length === 0 ? <p className="mt-2 text-xs text-stone-500">No pending photo submissions.</p> : <div className="mt-2 space-y-2">{pendingPhotos.slice(0, 4).map((photo) => <button key={photo.id} onClick={() => { setActiveTab('photos'); setShowNotifications(false); }} className="flex w-full items-center gap-2 rounded-lg p-1.5 text-left hover:bg-stone-50"><img src={photo.url} alt="Pending submission" className="h-9 w-9 rounded object-cover" /><span className="min-w-0"><span className="block truncate text-xs font-semibold text-[#0F5132]">{photo.uploaderName}</span><span className="block truncate text-[10px] text-stone-500">Awaiting approval</span></span></button>)}</div>}
+            </div>}
           </div>
         </div>
 
