@@ -412,9 +412,9 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                     <img src={photo.url} alt="Guest submission" className="h-16 w-16 rounded-lg object-cover" />
                     <div className="min-w-0 flex-1"><p className="truncate text-xs font-semibold text-[#0F5132]">{photo.uploaderName}</p><p className="mt-1 line-clamp-2 text-[11px] text-stone-500">{photo.caption}</p>
                       <div className="mt-2 flex flex-wrap gap-1.5 text-[10px]">
-                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'approved' })} className="rounded bg-emerald-100 px-2 py-1 text-emerald-800">Approve</button>
-                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'hidden' })} className="rounded bg-stone-100 px-2 py-1 text-stone-700">Hide</button>
-                        <button onClick={() => onUpdatePhoto({ ...photo, isFeatured: !photo.isFeatured })} className="rounded bg-amber-100 px-2 py-1 text-amber-800">{photo.isFeatured ? 'Unfeature' : 'Feature'}</button>
+                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'approved' })} className="cursor-pointer rounded-lg border border-emerald-200 bg-emerald-100 px-2.5 py-1.5 font-semibold text-emerald-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-emerald-600 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Approve</button>
+                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'hidden' })} className="cursor-pointer rounded-lg border border-stone-200 bg-stone-100 px-2.5 py-1.5 font-semibold text-stone-700 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-700 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Hide</button>
+                        <button onClick={() => onUpdatePhoto({ ...photo, isFeatured: !photo.isFeatured })} className="cursor-pointer rounded-lg border border-amber-200 bg-amber-100 px-2.5 py-1.5 font-semibold text-amber-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#C85A17] hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">{photo.isFeatured ? 'Unfeature' : 'Feature'}</button>
                       </div></div>
                   </div>
                 ))}
