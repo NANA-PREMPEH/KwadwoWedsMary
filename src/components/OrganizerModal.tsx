@@ -146,16 +146,17 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl animate-fade-in">
-      <div className="glass-strong backdrop-blur-2xl border border-[#C85A17]/35 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden ring-1 ring-[#0F5132]/20">
+      <div className="w-full max-w-6xl max-h-[92vh] flex flex-col overflow-hidden rounded-[2rem] border border-[#E7C56A]/35 bg-[#FDFBF7]/95 shadow-[0_30px_90px_rgba(0,0,0,0.42)] ring-1 ring-white/40 backdrop-blur-2xl">
         
         {/* Header */}
-        <div className="p-5 sm:p-6 border-b border-[#C85A17]/20 glass flex items-center justify-between">
+        <div className="flex items-center justify-between border-b border-[#0F5132]/10 bg-white/75 p-5 sm:p-7">
           <div className="flex items-center gap-3">
             <div className="p-2.5 bg-[#0F5132] text-white rounded-xl border border-[#C85A17]/40 shadow-xs">
               <ShieldCheck className="w-5 h-5 text-[#E06D28]" />
             </div>
             <div>
-              <h3 className="font-serif text-xl sm:text-2xl text-[#0F5132] font-semibold">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#C85A17]">Private wedding operations</p>
+              <h3 className="font-serif text-xl sm:text-3xl text-[#0F5132] font-semibold">
                 Couple’s Organizer Dashboard
               </h3>
               <p className="text-xs text-stone-500 font-sans">
@@ -172,15 +173,10 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
               <X className="w-5 h-5" />
             </button>
           </div>
-          <button onClick={() => setActiveTab('photos')} className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'photos' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500'}`}>
-            Photos ({photos.filter((photo) => photo.moderationStatus === 'pending').length} pending)
-          </button>
-          <button onClick={() => setActiveTab('seating')} className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'seating' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500'}`}>Seating</button>
-          <button onClick={() => setActiveTab('announcements')} className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'announcements' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500'}`}>Announcements</button>
         </div>
 
         {/* Quick KPI stats row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 sm:p-6 bg-[#FDFBF7]/90 border-b border-[#0F5132]/10">
+        <div className="grid grid-cols-2 gap-3 border-b border-[#0F5132]/10 bg-[#F6F4EF] p-4 sm:grid-cols-4 sm:p-6">
           <div className="p-3.5 rounded-2xl glass border border-[#0F5132]/20 shadow-2xs">
             <span className="text-[10px] uppercase tracking-[0.16em] text-stone-500 font-sans font-medium block">Total RSVPs</span>
             <span className="font-serif text-2xl font-bold text-[#0F5132]">{rsvps.length}</span>
@@ -203,7 +199,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
         </div>
 
         {/* Tabs Bar */}
-        <div className="flex border-b border-[#0F5132]/15 bg-white px-6 text-xs uppercase tracking-wider font-sans font-medium">
+        <div className="flex overflow-x-auto border-b border-[#0F5132]/15 bg-white px-4 text-xs uppercase tracking-wider font-sans font-medium sm:px-6">
           <button
             onClick={() => setActiveTab('guests')}
             className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${
@@ -239,6 +235,9 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
           >
             Settings
           </button>
+          <button onClick={() => setActiveTab('photos')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'photos' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'}`}>Photos ({photos.filter((photo) => photo.moderationStatus === 'pending').length})</button>
+          <button onClick={() => setActiveTab('seating')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'seating' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'}`}>Seating</button>
+          <button onClick={() => setActiveTab('announcements')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'announcements' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'}`}>Announcements</button>
         </div>
 
         {/* Tab Body */}
