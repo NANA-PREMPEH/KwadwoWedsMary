@@ -13,6 +13,7 @@ interface OrganizerDashboardProps {
   onUpdateRsvp: (rsvp: RsvpEntry) => void;
   photos: WeddingPhoto[];
   onUpdatePhoto: (photo: WeddingPhoto) => void;
+  onDeletePhoto: (id: string) => void;
   tables: SeatingTable[];
   onUpdateTables: (tables: SeatingTable[]) => void;
   announcements: WeddingAnnouncement[];
@@ -31,6 +32,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
   onUpdateRsvp,
   photos,
   onUpdatePhoto,
+  onDeletePhoto,
   tables,
   onUpdateTables,
   announcements,
@@ -425,6 +427,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                         <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'approved' })} className="cursor-pointer rounded-lg border border-emerald-200 bg-emerald-100 px-2.5 py-1.5 font-semibold text-emerald-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-emerald-600 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Keep public</button>
                         <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'hidden' })} className="cursor-pointer rounded-lg border border-stone-200 bg-stone-100 px-2.5 py-1.5 font-semibold text-stone-700 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-700 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Hide</button>
                         <button onClick={() => onUpdatePhoto({ ...photo, isFeatured: !photo.isFeatured })} className="cursor-pointer rounded-lg border border-amber-200 bg-amber-100 px-2.5 py-1.5 font-semibold text-amber-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#C85A17] hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">{photo.isFeatured ? 'Unfeature' : 'Feature'}</button>
+                        <button onClick={() => { if (window.confirm(`Permanently delete this photo from ${photo.uploaderName}?`)) onDeletePhoto(photo.id); }} className="cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1.5 font-semibold text-rose-700 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-rose-600 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Delete</button>
                       </div></div>
                   </div>
                 ))}

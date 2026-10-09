@@ -453,6 +453,10 @@ export default function App() {
     setPhotos((prev) => prev.map((photo) => photo.id === updatedPhoto.id ? updatedPhoto : photo));
     void weddingApi.savePhoto(updatedPhoto).catch(() => {});
   };
+  const handleDeletePhoto = (id: string) => {
+    setPhotos((prev) => prev.filter((photo) => photo.id !== id));
+    void weddingApi.deletePhoto(id).catch(() => {});
+  };
 
   const dismissRsvpReminder = () => {
     setShowRsvpReminder(false);
@@ -589,6 +593,7 @@ export default function App() {
         onUpdateRsvp={handleUpdateRsvp}
         photos={photos}
         onUpdatePhoto={handleUpdatePhoto}
+        onDeletePhoto={handleDeletePhoto}
         tables={tables}
         onUpdateTables={handleUpdateTables}
         announcements={announcements}

@@ -1,4 +1,5 @@
 import { pool } from '../server/db.mjs';
+import { verifyAdminSession } from '../server/adminAuth.mjs';
 
 const isPhotoCategory = (value) => ['ceremony', 'cocktail', 'dinner', 'party', 'candid'].includes(value);
 const isPhotoFilter = (value) => ['none', 'black-and-white', 'sepia'].includes(value);
@@ -30,8 +31,16 @@ export default async function handler(req, res) {
       return res.status(200).json(rows.map(toPhoto));
     }
 
+    if (req.method === 'DELETE') {
+      if (!verifyAdminSession(req)) return res.status(401).json({ error: 'Admin authentication is required.' });
+      const { id } = req.body || {};
+      if (!id) return res.status(400).json({ error: 'Photo id is required.' });
+      await pool.query('DELETE FROM wedding_photos WHERE id = $1', [id]);
+      return res.status(204).end();
+    }
+
     if (req.method !== 'POST') {
-      res.setHeader('Allow', 'GET, POST');
+      res.setHeader('Allow', 'GET, POST, DELETE');
       return res.status(405).json({ error: 'Method not allowed.' });
     }
 

@@ -26,6 +26,7 @@ export const weddingApi = {
     method: 'POST',
     body: JSON.stringify(photo),
   }),
+  deletePhoto: (id: string) => request<void>('/photos', { method: 'DELETE', body: JSON.stringify({ id }) }),
   getWeddingDetails: () => request<{ content: WeddingDetails | null }>('/content'),
   saveWeddingDetails: (details: WeddingDetails) => request<{ content: WeddingDetails }>('/content', {
     method: 'PUT',
