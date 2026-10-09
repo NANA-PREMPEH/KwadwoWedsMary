@@ -3,6 +3,12 @@ import { pool } from '../server/db.mjs';
 const isPhotoCategory = (value) => ['ceremony', 'cocktail', 'dinner', 'party', 'candid'].includes(value);
 const isPhotoFilter = (value) => ['none', 'black-and-white', 'sepia'].includes(value);
 
+// Makes the photo endpoint resilient when the initial schema was applied before moderation was added.
+const ensurePhotoModerationColumns = () => pool.query(`
+  ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS moderation_status TEXT NOT NULL DEFAULT 'approved';
+  ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS is_featured BOOLEAN NOT NULL DEFAULT FALSE;
+`);
+
 const toPhoto = (row) => ({
   id: row.id,
   url: row.url,
@@ -18,6 +24,7 @@ const toPhoto = (row) => ({
 
 export default async function handler(req, res) {
   try {
+    await ensurePhotoModerationColumns();
     if (req.method === 'GET') {
       const { rows } = await pool.query('SELECT * FROM wedding_photos ORDER BY created_at DESC');
       return res.status(200).json(rows.map(toPhoto));
