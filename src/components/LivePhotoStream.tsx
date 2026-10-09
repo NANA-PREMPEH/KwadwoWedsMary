@@ -16,7 +16,7 @@ import {
 
 interface LivePhotoStreamProps {
   photos: WeddingPhoto[];
-  onAddPhoto: (photo: WeddingPhoto) => void;
+  onAddPhoto: (photo: WeddingPhoto) => Promise<boolean>;
   onLikePhoto: (id: string) => void;
 }
 
@@ -64,6 +64,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
   const [category, setCategory] = useState<PhotoCategory>('candid');
   const [photoFilter, setPhotoFilter] = useState<PhotoFilter>('none');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [uploadError, setUploadError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
 
@@ -162,7 +163,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
     setImagePreview(sampleUrl);
   };
 
-  const handleSubmitPhoto = (e: React.FormEvent) => {
+  const handleSubmitPhoto = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!imagePreview) return;
 
@@ -179,7 +180,11 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
       moderationStatus: 'approved'
     };
 
-    onAddPhoto(newPhoto);
+    const saved = await onAddPhoto(newPhoto);
+    if (!saved) {
+      setUploadError('We could not save this photo. Please try again.');
+      return;
+    }
     soundEngine.playNote(659.25, 0.8, 0.25, 'sine');
 
     // Reset
@@ -187,6 +192,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
     setCaption('');
     setUploaderName('');
     setPhotoFilter('none');
+    setUploadError('');
     setIsUploadingModal(false);
   };
 
@@ -203,7 +209,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
       isLikedByUser: false,
       moderationStatus: 'approved'
     };
-    onAddPhoto(simPhoto);
+    void onAddPhoto(simPhoto);
     soundEngine.playNote(587.33, 0.5, 0.2, 'sine');
   };
 

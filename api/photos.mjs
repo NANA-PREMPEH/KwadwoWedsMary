@@ -4,10 +4,10 @@ const isPhotoCategory = (value) => ['ceremony', 'cocktail', 'dinner', 'party', '
 const isPhotoFilter = (value) => ['none', 'black-and-white', 'sepia'].includes(value);
 
 // Makes the photo endpoint resilient when the initial schema was applied before moderation was added.
-const ensurePhotoModerationColumns = () => pool.query(`
-  ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS moderation_status TEXT NOT NULL DEFAULT 'approved';
-  ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS is_featured BOOLEAN NOT NULL DEFAULT FALSE;
-`);
+const ensurePhotoModerationColumns = async () => {
+  await pool.query("ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS moderation_status TEXT NOT NULL DEFAULT 'approved'");
+  await pool.query("ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS is_featured BOOLEAN NOT NULL DEFAULT FALSE");
+};
 
 const toPhoto = (row) => ({
   id: row.id,

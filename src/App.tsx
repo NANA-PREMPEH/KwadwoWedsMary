@@ -390,11 +390,14 @@ export default function App() {
     void weddingApi.logoutAdmin().catch(() => {});
   };
 
-  const handleAddPhoto = (newPhoto: WeddingPhoto) => {
-    setPhotos((prev) => [newPhoto, ...prev]);
-    void weddingApi.savePhoto(newPhoto).catch(() => {
-      // The local gallery remains available if the API is offline.
-    });
+  const handleAddPhoto = async (newPhoto: WeddingPhoto) => {
+    try {
+      const savedPhoto = await weddingApi.savePhoto(newPhoto);
+      setPhotos((prev) => [savedPhoto, ...prev]);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const handleLikePhoto = (id: string) => {
