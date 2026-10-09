@@ -208,6 +208,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
           >
             Guest List ({filteredRsvps.length})
           </button>
+          <button onClick={() => setActiveTab('seating')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'seating' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'}`}>Seating Plan</button>
 
           <button
             onClick={() => setActiveTab('dietary')}
@@ -236,7 +237,6 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
             Settings
           </button>
           <button onClick={() => setActiveTab('photos')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'photos' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'}`}>Photos ({photos.filter((photo) => photo.moderationStatus === 'pending').length})</button>
-          <button onClick={() => setActiveTab('seating')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'seating' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'}`}>Seating</button>
           <button onClick={() => setActiveTab('announcements')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'announcements' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'}`}>Announcements</button>
         </div>
 
