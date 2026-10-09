@@ -6,8 +6,11 @@ interface EnvelopeModalProps {
   isOpen: boolean;
   onClose: () => void;
   coupleNames: string;
+  partnerOne: string;
+  partnerTwo: string;
   weddingDate: string;
   venueName: string;
+  venueAddress: string;
   onOpened?: () => void;
 }
 
@@ -15,8 +18,11 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   isOpen,
   onClose,
   coupleNames,
+  partnerOne,
+  partnerTwo,
   weddingDate,
   venueName,
+  venueAddress,
   onOpened
 }) => {
   const [isBroken, setIsBroken] = useState(false);
@@ -31,6 +37,12 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   }, [isOpen]);
 
   if (!isOpen) return null;
+
+  const initials = coupleNames
+    .split('&')
+    .map((name) => name.trim().charAt(0))
+    .filter(Boolean)
+    .join(' & ');
 
   const handleBreakSeal = () => {
     if (isBroken) return;
@@ -76,7 +88,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
             {isBroken ? 'Wedding Invitation Unveiled' : 'Personal Invitation for Our Honored Guest'}
           </p>
           <p className="text-xs text-[#9B9284] font-sans mt-1.5">
-            {isBroken ? 'Welcome to our celebration at Lake Como' : 'Tap the wax seal to unveil the invitation'}
+            {isBroken ? 'Welcome to our celebration in Accra, Ghana' : 'Tap the wax seal to unveil the invitation'}
           </p>
         </div>
 
@@ -130,56 +142,58 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
 
           {/* Unfolded Inside Invitation Card (slides out smoothly when unsealed) */}
           <div
-            className={`absolute inset-x-5 inset-y-5 bg-white border-2 border-[#0F5132]/60 rounded-2xl shadow-xl p-6 sm:p-8 flex flex-col items-center justify-between text-center transition-all duration-1000 ease-out z-20 ${
+            className={`absolute inset-x-5 inset-y-5 bg-white border-2 border-[#0F5132]/60 rounded-2xl shadow-xl p-4 sm:p-5 flex flex-col items-center text-center transition-all duration-1000 ease-out z-20 ${
               isBroken
                 ? 'scale-100 translate-y-0 opacity-100 ring-1 ring-[#C85A17]/30'
                 : 'scale-95 translate-y-8 opacity-0 pointer-events-none'
             }`}
           >
             {/* Card Header Fleuron */}
-            <div className="w-full flex items-center justify-center space-x-2 text-[#C85A17] text-[11px] sm:text-xs tracking-[0.3em] uppercase pt-1 font-semibold font-sans">
+            <div className="w-full flex items-center justify-center space-x-1.5 text-[#C85A17] text-[9px] sm:text-[10px] tracking-[0.22em] uppercase font-semibold font-sans shrink-0">
               <span>✦</span>
               <span>The Honour of Your Presence</span>
               <span>✦</span>
             </div>
 
             {/* Couple names & invitation copy */}
-            <div className="my-auto py-2">
-              <span className="font-script text-4xl sm:text-5xl text-[#0F5132] block leading-tight">
-                {coupleNames}
-              </span>
-              <div className="w-16 h-px bg-[#C85A17] mx-auto my-3" />
-              <p className="text-[11px] sm:text-xs uppercase tracking-[0.25em] text-[#C85A17] font-semibold font-sans">
+            <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center py-1.5 sm:py-2">
+              <div className="font-script text-[clamp(1.25rem,3.6vw,2.35rem)] text-[#0F5132] leading-[1.05]">
+                <span className="block whitespace-nowrap">{partnerOne}</span>
+                <span className="block text-[#C85A17] text-[0.72em] leading-none my-0.5">&amp;</span>
+                <span className="block whitespace-nowrap">{partnerTwo}</span>
+              </div>
+              <div className="w-12 h-px bg-[#C85A17] mx-auto my-2" />
+              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[#C85A17] font-semibold font-sans">
                 Request the pleasure of your company
               </p>
-              <p className="text-xs sm:text-sm font-serif italic text-stone-600 mt-2">
+              <p className="text-[11px] sm:text-xs font-serif italic text-stone-600 mt-1">
                 as they exchange their vows and unite in marriage
               </p>
             </div>
 
             {/* Wedding Date & Venue */}
-            <div className="w-full border-t border-[#0F5132]/20 pt-3 text-center">
-              <p className="font-serif text-base sm:text-lg font-semibold text-[#0F5132] tracking-wide">
+            <div className="w-full shrink-0 border-t border-[#0F5132]/20 pt-2 text-center">
+              <p className="font-serif text-sm sm:text-base font-semibold text-[#0F5132] tracking-wide">
                 {weddingDate}
               </p>
-              <p className="text-xs text-[#C85A17] font-sans mt-0.5 tracking-wider font-medium">
-                {venueName} · Lake Como, Italy
+              <p className="text-[10px] sm:text-xs text-[#C85A17] font-sans mt-0.5 tracking-wide font-medium">
+                {venueName} · Accra, Ghana
               </p>
             </div>
 
             {/* Action buttons upon full reveal */}
             {isFullyRevealed && (
-              <div className="mt-4 w-full flex flex-col sm:flex-row items-center gap-2 animate-fade-in">
+              <div className="mt-2 w-full flex flex-col sm:flex-row items-center gap-2 animate-fade-in shrink-0">
                 <button
                   onClick={handleExplore}
-                  className="w-full py-2.5 px-4 bg-[#0F5132] hover:bg-[#082E1D] text-white text-xs uppercase tracking-[0.2em] font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg group cursor-pointer border border-[#C85A17]/40"
+                  className="w-full py-2 px-4 bg-[#0F5132] hover:bg-[#082E1D] text-white text-xs uppercase tracking-[0.2em] font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg group cursor-pointer border border-[#C85A17]/40"
                 >
                   <span>Enter Celebration Suite</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#E06D28]" />
                 </button>
                 <button
                   onClick={handleResetSeal}
-                  className="py-2.5 px-3 bg-[#FAF5EE] hover:bg-stone-200 text-[#0F5132] text-xs uppercase tracking-wider font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-[#DFD4C2] cursor-pointer"
+                  className="py-2 px-3 bg-[#FAF5EE] hover:bg-stone-200 text-[#0F5132] text-xs uppercase tracking-wider font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-[#DFD4C2] cursor-pointer"
                   title="Seal envelope again"
                 >
                   <RotateCcw className="w-3.5 h-3.5 text-[#C85A17]" />
@@ -203,12 +217,12 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
               />
 
               {/* Envelope Flap Header Typography: Couple Names & Venue */}
-              <div className="absolute top-[18%] sm:top-[20%] text-center z-20 px-4 pointer-events-none">
-                <div className="font-serif italic text-[#0F5132] text-base sm:text-lg font-semibold tracking-wide">
-                  Julian & Eleanor
+              <div className="absolute top-[18%] sm:top-[20%] inset-x-4 text-center z-20 pointer-events-none">
+                <div className="font-serif italic text-[#0F5132] text-sm sm:text-base font-semibold tracking-wide leading-tight">
+                  {coupleNames}
                 </div>
                 <div className="font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#C85A17] font-semibold mt-1">
-                  VILLA BELLISSIMA · LAKE COMO
+                  {venueName} · {venueAddress}
                 </div>
               </div>
 
@@ -236,7 +250,7 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                     <div className="w-[72%] h-[72%] rounded-full border border-dashed border-white/60 flex items-center justify-center shadow-inner">
                       {/* Serif Monogram Initials */}
                       <span className="font-serif font-bold text-xl sm:text-2xl text-white tracking-widest drop-shadow-sm select-none">
-                        J & E
+                        {initials}
                       </span>
                     </div>
 

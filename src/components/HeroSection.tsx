@@ -23,7 +23,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     if (navigator.share) {
       navigator.share({
         title: `${details.coupleNames} Wedding Invitation`,
-        text: `You're invited to celebrate the wedding of ${details.coupleNames} on ${details.date} at Lake Como!`,
+        text: `You're invited to celebrate the wedding of ${details.coupleNames} on ${details.date} at ${details.ceremonyVenue.name}!`,
         url: window.location.href,
       }).catch(() => {});
     } else {
@@ -39,8 +39,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       title: `${details.coupleNames} Wedding Celebration`,
       description: `Ceremony & Reception for ${details.coupleNames} at ${details.ceremonyVenue.name}. Dress code: ${details.dressCode.theme}.`,
       location: details.ceremonyVenue.address,
-      startDateIso: '20260919T133000Z',
-      endDateIso: '20260920T010000Z',
+      startDateIso: '20261114T090000Z',
+      endDateIso: '20261114T120000Z',
     };
     downloadIcsFile(calEvent);
   };
@@ -78,7 +78,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </h1>
 
         <p className="font-serif italic text-lg sm:text-xl text-[#3D322A] max-w-2xl mx-auto mb-8 font-light leading-relaxed">
-          "Two souls, one path, bound in timeless devotion overlooking the sapphire waters of Lake Como."
+          "Together with their families, they request the pleasure of your company as they celebrate their wedding."
         </p>
 
         {/* Hero Imagery Card with Arch */}
@@ -86,7 +86,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="relative rounded-t-[130px] rounded-b-3xl overflow-hidden shadow-2xl border-4 border-white/95 bg-stone-200 aspect-[16/10] ring-1 ring-[#C85A17]/30">
             <img
               src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=85"
-              alt="Julian and Eleanor at Lake Como"
+              alt="Kwadwo and Mary wedding celebration"
               className="w-full h-full object-cover transition-transform duration-1000 hover:scale-105"
             />
             {/* Soft gradient overlay */}
@@ -94,7 +94,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             
             <div className="absolute bottom-5 inset-x-5 flex items-center justify-between text-white text-xs sm:text-sm">
               <span className="font-serif italic tracking-wider drop-shadow-md text-stone-100">
-                Villa Bellissima · Tremezzina
+                {details.ceremonyVenue.address}
               </span>
               <span className="font-sans tracking-[0.25em] uppercase text-[11px] font-semibold bg-black/40 backdrop-blur-md px-3.5 py-1 rounded-full border border-white/30 shadow-sm">
                 19 · IX · MMXXVI
@@ -118,7 +118,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
         {/* Prominent Live Countdown Timer Tracking Days, Hours, and Minutes */}
         <div className="mt-10">
-          <CountdownTimer targetDate={details.targetDateTime} />
+          <CountdownTimer
+            targetDate={details.targetDateTime}
+            formattedDate={details.date}
+            venueName={details.ceremonyVenue.name}
+          />
         </div>
 
         {/* Date and Venue summary */}
@@ -132,7 +136,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {details.date}
             </p>
             <p className="text-xs text-stone-600 mt-0.5 font-sans">
-              Ceremony commences at 16:30
+              Ceremony commences at 9:00 AM
             </p>
           </div>
 
@@ -145,7 +149,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {details.ceremonyVenue.name}
             </p>
             <p className="text-xs text-stone-600 mt-0.5 font-sans">
-              {details.ceremonyVenue.city}, Italy
+              {details.ceremonyVenue.city}, {details.ceremonyVenue.country}
             </p>
           </div>
         </div>

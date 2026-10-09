@@ -31,17 +31,45 @@ import { GuestbookSection } from './components/GuestbookSection';
 import { FaqRegistrySection } from './components/FaqRegistrySection';
 import { OrganizerModal } from './components/OrganizerModal';
 import { Footer } from './components/Footer';
+import { BellRing, X } from 'lucide-react';
+
+const PAGE_IDS = ['couple', 'schedule', 'venue', 'dress-code', 'rsvp', 'seating-chart', 'music-player', 'photos', 'guestbook', 'faq'] as const;
+
+const getPageFromHash = () => {
+  const page = window.location.hash.replace(/^#\/?/, '');
+  return PAGE_IDS.includes(page as typeof PAGE_IDS[number]) ? page : 'couple';
+};
 
 export default function App() {
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return localStorage.getItem('aeterna_theme') === 'dark';
+    } catch {
+      return false;
+    }
+  });
+  const [hasSubmittedRsvp, setHasSubmittedRsvp] = useState(() => {
+    try {
+      return localStorage.getItem('aeterna_rsvp_submitted') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [showRsvpReminder, setShowRsvpReminder] = useState(false);
+
   // State with localStorage persistence
   const [details, setDetails] = useState<WeddingDetails>(() => {
     try {
-      const saved = localStorage.getItem('aeterna_wedding_details_v2');
-      if (saved) return JSON.parse(saved);
-      const v1 = localStorage.getItem('aeterna_wedding_details');
-      if (v1) {
-        const parsed = JSON.parse(v1);
-        return { ...parsed, dressCode: INITIAL_WEDDING_DETAILS.dressCode };
+      const saved = localStorage.getItem('aeterna_wedding_details_v5');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...parsed,
+          ceremonyVenue: {
+            ...parsed.ceremonyVenue,
+            googleMapsUrl: INITIAL_WEDDING_DETAILS.ceremonyVenue.googleMapsUrl
+          }
+        };
       }
       return INITIAL_WEDDING_DETAILS;
     } catch {
@@ -78,7 +106,7 @@ export default function App() {
 
   const [songs, setSongs] = useState<SongSuggestion[]>(() => {
     try {
-      const saved = localStorage.getItem('aeterna_wedding_songs');
+      const saved = localStorage.getItem('aeterna_wedding_songs_v2');
       return saved ? JSON.parse(saved) : INITIAL_SONG_SUGGESTIONS;
     } catch {
       return INITIAL_SONG_SUGGESTIONS;
@@ -108,7 +136,7 @@ export default function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [activeSection, setActiveSection] = useState(getPageFromHash);
 
   // Check if first-time visitor to pop the envelope
   useEffect(() => {
@@ -122,7 +150,7 @@ export default function App() {
   // Save changes to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('aeterna_wedding_details_v2', JSON.stringify(details));
+      localStorage.setItem('aeterna_wedding_details_v5', JSON.stringify(details));
     } catch {}
   }, [details]);
 
@@ -146,7 +174,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('aeterna_wedding_songs', JSON.stringify(songs));
+      localStorage.setItem('aeterna_wedding_songs_v2', JSON.stringify(songs));
     } catch {}
   }, [songs]);
 
@@ -166,6 +194,39 @@ export default function App() {
     } catch {}
   }, [currentUserRsvp]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('aeterna_rsvp_submitted', String(hasSubmittedRsvp));
+    } catch {}
+  }, [hasSubmittedRsvp]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', isDarkMode);
+    try {
+      localStorage.setItem('aeterna_theme', isDarkMode ? 'dark' : 'light');
+    } catch {}
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveSection(getPageFromHash());
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  useEffect(() => {
+    if (hasSubmittedRsvp) return;
+
+    try {
+      if (sessionStorage.getItem('aeterna_rsvp_reminder_dismissed') === 'true') return;
+    } catch {}
+
+    const reminderTimer = window.setTimeout(() => setShowRsvpReminder(true), 60_000);
+    return () => window.clearTimeout(reminderTimer);
+  }, [hasSubmittedRsvp]);
+
   // Audio Toggle
   const handleToggleAudio = () => {
     const nextState = soundEngine.toggleMusic();
@@ -175,6 +236,8 @@ export default function App() {
   // Handlers for dynamic actions
   const handleAddRsvp = (newRsvp: RsvpEntry) => {
     setRsvps((prev) => [newRsvp, ...prev]);
+    setHasSubmittedRsvp(true);
+    setShowRsvpReminder(false);
 
     // If accepting, set as current user so seating chart unlocks immediately
     if (newRsvp.attending === 'accepted') {
@@ -278,11 +341,20 @@ export default function App() {
     );
   };
 
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+  const navigateTo = (page: string) => {
+    const nextPage = PAGE_IDS.includes(page as typeof PAGE_IDS[number]) ? page : 'couple';
+    if (window.location.hash === `#/${nextPage}`) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
     }
+    window.location.hash = `/${nextPage}`;
+  };
+
+  const dismissRsvpReminder = () => {
+    setShowRsvpReminder(false);
+    try {
+      sessionStorage.setItem('aeterna_rsvp_reminder_dismissed', 'true');
+    } catch {}
   };
 
   return (
@@ -295,68 +367,108 @@ export default function App() {
         isAudioPlaying={isAudioPlaying}
         onToggleAudio={handleToggleAudio}
         activeSection={activeSection}
+        onNavigate={navigateTo}
+        isDarkMode={isDarkMode}
+        onToggleDarkMode={() => setIsDarkMode((current) => !current)}
       />
 
+      {showRsvpReminder && (
+        <aside
+          className="fixed right-4 bottom-4 z-[60] w-[calc(100%-2rem)] max-w-sm rounded-2xl border border-[#C85A17]/45 bg-[#0F5132]/95 p-4 text-white shadow-2xl backdrop-blur-xl animate-fade-in"
+          role="status"
+          aria-live="polite"
+        >
+          <button
+            type="button"
+            onClick={dismissRsvpReminder}
+            className="absolute top-2.5 right-2.5 rounded-full p-1 text-white/70 hover:bg-white/10 hover:text-white transition-colors"
+            aria-label="Dismiss RSVP reminder"
+          >
+            <X className="h-4 w-4" />
+          </button>
+          <div className="flex gap-3 pr-5">
+            <BellRing className="h-5 w-5 shrink-0 text-[#E06D28]" />
+            <div>
+              <p className="font-serif text-lg leading-tight">Have you RSVP’d?</p>
+              <p className="mt-1 text-xs leading-relaxed text-white/80">Kindly let Kwadwo and Mary know if you will be joining the celebration.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  dismissRsvpReminder();
+                  navigateTo('rsvp');
+                }}
+                className="mt-3 rounded-lg bg-[#C85A17] px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white hover:bg-[#A0420B] transition-colors"
+              >
+                RSVP now
+              </button>
+            </div>
+          </div>
+        </aside>
+      )}
+
       {/* Main Wedding Content Flow */}
-      <main className="flex-1">
-        <HeroSection
+      <main className="flex-1" key={activeSection}>
+        {activeSection === 'couple' && <HeroSection
           details={details}
           onOpenEnvelope={() => setIsEnvelopeOpen(true)}
-          onScrollToRsvp={() => scrollTo('rsvp')}
-          onScrollToVenue={() => scrollTo('venue')}
-        />
+          onScrollToRsvp={() => navigateTo('rsvp')}
+          onScrollToVenue={() => navigateTo('venue')}
+        />}
 
-        <ScheduleSection schedule={INITIAL_SCHEDULE} />
+        {activeSection === 'schedule' && <ScheduleSection schedule={INITIAL_SCHEDULE} />}
 
-        <VenueSection details={details} />
+        {activeSection === 'venue' && <VenueSection details={details} />}
 
-        <DressCodeSection dressCode={details.dressCode} />
+        {activeSection === 'dress-code' && <DressCodeSection dressCode={details.dressCode} />}
 
-        <RsvpSection
+        {activeSection === 'rsvp' && <RsvpSection
           onAddRsvp={handleAddRsvp}
           existingRsvps={rsvps}
-        />
+        />}
 
-        <SeatingChartSection
+        {activeSection === 'seating-chart' && <SeatingChartSection
           tables={tables}
           rsvps={rsvps}
           currentUserRsvp={currentUserRsvp}
           onConfirmUserAttendance={setCurrentUserRsvp}
-          onScrollToRsvp={() => scrollTo('rsvp')}
-        />
+          onScrollToRsvp={() => navigateTo('rsvp')}
+        />}
 
-        <MusicPlayerSection
+        {activeSection === 'music-player' && <MusicPlayerSection
           songs={songs}
           onAddSong={handleAddSong}
           onVoteSong={handleVoteSong}
           isAudioPlaying={isAudioPlaying}
           onToggleAudio={handleToggleAudio}
-        />
+        />}
 
-        <LivePhotoStream
+        {activeSection === 'photos' && <LivePhotoStream
           photos={photos}
           onAddPhoto={handleAddPhoto}
           onLikePhoto={handleLikePhoto}
-        />
+        />}
 
-        <GuestbookSection
+        {activeSection === 'guestbook' && <GuestbookSection
           entries={guestbook}
           onAddEntry={handleAddGuestbookEntry}
-        />
+        />}
 
-        <FaqRegistrySection faqs={INITIAL_FAQS} />
+        {activeSection === 'faq' && <FaqRegistrySection faqs={INITIAL_FAQS} />}
       </main>
 
       {/* Footer */}
-      <Footer hashtag={details.hashtag} />
+      <Footer details={details} />
 
       {/* Wax Seal Opening Modal Experience */}
       <EnvelopeModal
         isOpen={isEnvelopeOpen}
         onClose={() => setIsEnvelopeOpen(false)}
         coupleNames={details.coupleNames}
+        partnerOne={details.partnerOne}
+        partnerTwo={details.partnerTwo}
         weddingDate={details.date}
         venueName={details.ceremonyVenue.name}
+        venueAddress={details.ceremonyVenue.address}
         onOpened={() => setIsAudioPlaying(true)}
       />
 

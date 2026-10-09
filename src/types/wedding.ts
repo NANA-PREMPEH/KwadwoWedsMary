@@ -52,6 +52,7 @@ export interface RsvpEntry {
 }
 
 export type PhotoCategory = 'all' | 'ceremony' | 'cocktail' | 'dinner' | 'party' | 'candid';
+export type PhotoFilter = 'none' | 'black-and-white' | 'sepia';
 
 export interface WeddingPhoto {
   id: string;
@@ -62,6 +63,7 @@ export interface WeddingPhoto {
   timestamp: string;
   likes: number;
   isLikedByUser?: boolean;
+  filter?: PhotoFilter;
 }
 
 export interface GuestbookEntry {

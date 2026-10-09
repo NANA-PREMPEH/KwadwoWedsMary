@@ -42,16 +42,16 @@ export interface VenueSite {
 export const VENUE_SITES: VenueSite[] = [
   {
     id: 'site-ceremony',
-    name: 'Loggia Durini Terrace — Villa Bellissima',
-    italianName: 'La Terrazza dei Voti Sacri',
+    name: 'Idyllic Moments Guest House',
+    italianName: 'Wedding Venue',
     type: 'ceremony',
-    role: 'Ceremony & Sacred Vows',
-    address: 'Via Statale 47, 22019 Tremezzina CO, Lake Como, Italy',
+    role: 'Wedding Ceremony',
+    address: 'Idyllic Moments Guest House',
     lat: 45.9657,
     lng: 9.2023,
-    timeOrDistance: '16:30 Ceremony Commences (Arrive 15:30)',
-    description: 'Triple-arched historic loggia perched on the promontory with panoramic views across both arms of Lake Como.',
-    googleMapsUrl: 'https://maps.google.com/?q=Villa+Balbianello+Lake+Como+Italy',
+    timeOrDistance: 'Saturday, November 14, 2026 · 9:00 AM',
+    description: 'Join Kwadwo Akomani Preko and Mary Adubeah Yeboah as they celebrate their wedding.',
+    googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
     imageUrl: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=80'
   },
   {
@@ -60,12 +60,12 @@ export const VENUE_SITES: VenueSite[] = [
     italianName: 'Il Padiglione di Vetro',
     type: 'reception',
     role: 'Aperitivo, Gala Dinner & Dancing',
-    address: 'Belvedere Promontory Grounds, Villa Bellissima, Italy',
+    address: 'Idyllic Moments Guest House',
     lat: 45.9664,
     lng: 9.2038,
     timeOrDistance: '17:45 Aperitivo · 19:30 Gala Dinner · Late Night',
     description: 'Chandelier-lit open glass structure surrounded by centuries-old olive groves, lakeside terraces, and evening fire pits.',
-    googleMapsUrl: 'https://maps.google.com/?q=Villa+Balbianello+Lake+Como+Italy',
+    googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
     imageUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80'
   },
   {
@@ -74,13 +74,13 @@ export const VENUE_SITES: VenueSite[] = [
     italianName: 'Menaggio Luxury Residence',
     type: 'hotel',
     role: 'Primary Guest Hotel & Spa Block',
-    address: 'Via Castelli 9, 22017 Menaggio CO, Italy',
+    address: 'Idyllic Moments Guest House',
     lat: 46.0211,
     lng: 9.2415,
     timeOrDistance: '~10 mins via complimentary private shuttle boat',
     description: 'Premier 5-star lakeside hotel reserved with preferred block rates under group code JULIANELEANOR.',
     bookingCode: 'JULIANELEANOR',
-    googleMapsUrl: 'https://maps.google.com/?q=Grand+Hotel+Victoria+Menaggio',
+    googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
     phone: '+39 0344 32003',
     imageUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1000&q=80'
   },
@@ -90,13 +90,13 @@ export const VENUE_SITES: VenueSite[] = [
     italianName: 'Bellagio Promontory Suites',
     type: 'hotel',
     role: 'Historic Partner Hotel & Private Jetty',
-    address: 'Via Roma 1, 22021 Bellagio CO, Italy',
+    address: 'Idyllic Moments Guest House',
     lat: 45.9892,
     lng: 9.2635,
     timeOrDistance: '~12 mins direct wooden water taxi to Villa jetty',
     description: 'Historic neoclassical palace situated directly on the tip of Bellagio with private water taxi pickup.',
     bookingCode: 'JULIANELEANOR',
-    googleMapsUrl: 'https://maps.google.com/?q=Grand+Hotel+Villa+Serbelloni+Bellagio',
+    googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
     phone: '+39 031 950216',
     imageUrl: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1000&q=80'
   },
@@ -106,13 +106,13 @@ export const VENUE_SITES: VenueSite[] = [
     italianName: 'Lakeside Boutique Resort',
     type: 'hotel',
     role: 'Partner Hotel & Water Terrace',
-    address: 'Via Regina 8, 22016 Tremezzina CO, Italy',
+    address: 'Idyllic Moments Guest House',
     lat: 45.9845,
     lng: 9.2295,
     timeOrDistance: '~5 mins private boat launch to ceremony dock',
     description: 'Iconic Art Nouveau hotel featuring floating pools and direct shuttle connections to the wedding gates.',
     bookingCode: 'JULIANELEANOR',
-    googleMapsUrl: 'https://maps.google.com/?q=Grand+Hotel+Tremezzo',
+    googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
     phone: '+39 0344 42491',
     imageUrl: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=80'
   }
@@ -273,7 +273,7 @@ export const InteractiveVenueMap: React.FC = () => {
                 : 'text-stone-600 hover:text-[#0F5132]'
             }`}
           >
-            All Sites ({VENUE_SITES.length})
+            Wedding Program
           </button>
 
           <button
@@ -309,7 +309,7 @@ export const InteractiveVenueMap: React.FC = () => {
             }`}
           >
             <span className="w-2 h-2 rounded-full bg-[#082E1D]" />
-            <span>Hotels</span>
+            <span>Venue Info</span>
           </button>
         </div>
 
@@ -317,7 +317,7 @@ export const InteractiveVenueMap: React.FC = () => {
         <div className="flex items-center gap-3 text-xs text-stone-600 font-sans">
           <div className="flex items-center gap-1.5 px-3 py-1 bg-[#FDFBF7] rounded-lg border border-stone-200">
             <span className="w-2 h-2 rounded-full bg-[#0F5132]"></span>
-            <span className="text-[11px] font-medium text-stone-700">Static Regional Overview</span>
+            <span className="text-[11px] font-medium text-stone-700">Venue Location Overview</span>
           </div>
 
           <button
@@ -349,7 +349,7 @@ export const InteractiveVenueMap: React.FC = () => {
           <div className="absolute top-4 left-4 z-20 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl border border-[#0F5132]/25 shadow-md flex items-center gap-2">
             <MapPin className="w-4 h-4 text-[#C85A17]" />
             <span className="text-xs font-serif font-bold text-[#0F5132]">
-              Lake Como Regional Map · Static View
+              Idyllic Moments Guest House · Venue Map
             </span>
           </div>
 
@@ -364,7 +364,7 @@ export const InteractiveVenueMap: React.FC = () => {
             </span>
             <span className="text-stone-300">·</span>
             <span className="flex items-center gap-1 text-[#082E1D]">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#082E1D]"></span> Hotels
+              <span className="w-2.5 h-2.5 rounded-full bg-[#082E1D]"></span> Venue
             </span>
           </div>
 
@@ -375,7 +375,7 @@ export const InteractiveVenueMap: React.FC = () => {
                 <Ship className="w-4 h-4" />
               </div>
               <p className="text-stone-700 font-sans">
-                <strong className="text-[#0F5132]">Private Riva Water Shuttles:</strong> Complimentary speedboats connect Bellagio, Menaggio, and the Villa Bellissima dock.
+                <strong className="text-[#0F5132]">Wedding Venue:</strong> Idyllic Moments Guest House · Saturday, November 14, 2026 at 9:00 AM.
               </p>
             </div>
             <span className="text-[10px] text-stone-500 uppercase tracking-wider font-bold shrink-0 hidden sm:inline">

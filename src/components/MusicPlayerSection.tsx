@@ -12,7 +12,7 @@ interface MusicPlayerSectionProps {
 }
 
 const QUICK_INSPIRATIONS = [
-  { title: "Can't Help Falling In Love", artist: 'Elvis Presley', genre: 'Slow Dance & Romance' as MusicGenre },
+  { title: 'My Heart Will Go On', artist: 'Celine Dion', genre: 'Slow Dance & Romance' as MusicGenre },
   { title: 'That’s Amore', artist: 'Dean Martin', genre: 'Italian Classics' as MusicGenre },
   { title: 'Ain’t No Mountain High Enough', artist: 'Marvin Gaye & Tammi Terrell', genre: 'Groove & Disco' as MusicGenre },
   { title: 'Dancing Queen', artist: 'ABBA', genre: 'Reception Party' as MusicGenre },
@@ -117,7 +117,7 @@ export const MusicPlayerSection: React.FC<MusicPlayerSectionProps> = ({
           <span className="w-8 h-0.5 bg-[#C85A17]" />
         </div>
         <p className="font-serif italic text-base text-[#524438] max-w-xl mx-auto">
-          Help craft the soundtrack to our Lake Como celebration! Suggest your favorite songs, vote for dance floor anthems, and listen along.
+          Help craft the soundtrack to Kwadwo and Mary’s celebration! Suggest your favorite songs, vote for dance floor anthems, and listen along.
         </p>
       </div>
 
@@ -145,10 +145,10 @@ export const MusicPlayerSection: React.FC<MusicPlayerSectionProps> = ({
                 </span>
               </div>
               <h3 className="font-serif text-xl sm:text-2xl text-[#0F5132] font-semibold">
-                Julian & Eleanor’s Como Waltz
+                My Heart Will Go On
               </h3>
               <p className="text-xs text-stone-600 font-sans mt-0.5">
-                Chopin Nocturne & Italian Acoustic Melodies · Web Audio Soundscape
+                Celine Dion · Featured wedding song
               </p>
             </div>
           </div>

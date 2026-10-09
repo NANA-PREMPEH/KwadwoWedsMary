@@ -1,25 +1,25 @@
 import { WeddingDetails, ScheduleItem, RsvpEntry, WeddingPhoto, GuestbookEntry, FaqItem, SongSuggestion, SeatingTable } from '../types/wedding';
 
 export const INITIAL_WEDDING_DETAILS: WeddingDetails = {
-  coupleNames: 'Julian & Eleanor',
-  partnerOne: 'Julian Vance',
-  partnerTwo: 'Eleanor St. Claire',
-  date: 'Saturday, September 19, 2026',
-  targetDateTime: '2026-09-19T15:30:00+02:00',
+  coupleNames: 'Kwadwo Akomani Preko & Mary Adubeah Yeboah',
+  partnerOne: 'Kwadwo Akomani Preko',
+  partnerTwo: 'Mary Adubeah Yeboah',
+  date: 'Saturday, November 14, 2026 · 9:00 AM',
+  targetDateTime: '2026-11-14T09:00:00+00:00',
   ceremonyVenue: {
-    name: 'Villa Bellissima — Lake Como',
-    tagline: 'Terrazza dei Cipressi & Loggia Durini',
-    address: 'Via Statale 47, 22019 Tremezzina CO, Italy',
-    city: 'Lake Como, Lombardy',
-    country: 'Italy',
-    coordinates: { lat: 45.9657, lng: 9.2023 },
-    googleMapsUrl: 'https://maps.google.com/?q=Villa+Balbianello+Lake+Como+Italy',
-    description: 'Perched upon a wooded promontory overlooking the azure waters of Lake Como, Villa Bellissima provides a timeless setting among century-old cypress trees, lakeside colonnades, and terraced gardens.'
+    name: 'Idyllic Moments Guest House',
+    tagline: 'Idyllic Moments Guest House',
+    address: 'Idyllic Moments Guest House',
+    city: 'Accra',
+    country: 'Ghana',
+    coordinates: { lat: 5.6836, lng: -0.20081 },
+    googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
+    description: 'Join us at Idyllic Moments Guest House in North Haatso for the celebration of Kwadwo and Mary.'
   },
   receptionVenue: {
-    name: 'The Glass Pavilion & Belvedere Gardens',
-    address: 'Private Promontory Grounds, Villa Bellissima',
-    description: 'An open-air glass pavilion illuminated by candlelight and chandeliers, surrounded by olive groves and panoramic views of Bellagio.'
+    name: 'Idyllic Moments Guest House',
+    address: 'Idyllic Moments Guest House',
+    description: 'The wedding celebration will be held at Idyllic Moments Guest House.'
   },
   dressCode: {
     theme: 'Emerald Green, Burnt Orange & Crisp White',
@@ -32,16 +32,16 @@ export const INITIAL_WEDDING_DETAILS: WeddingDetails = {
       { name: 'Deep Forest Emerald', hex: '#1B3B2F' }
     ]
   },
-  hashtag: '#JulianAndEleanor2026'
+  hashtag: '#KwadwoAndMary2026'
 };
 
 export const INITIAL_SCHEDULE: ScheduleItem[] = [
   {
     id: 'sch-1',
-    time: '15:30',
-    title: 'Guest Arrival & Welcome Spritz',
-    location: 'Lakeside Pier & Pergola Gardens',
-    description: 'Arrive by private wooden motorboat at the private jetty. Enjoy chilled Prosecco, bellinis, and harp melodies as you take your seats.',
+    time: '09:00',
+    title: 'Wedding Ceremony',
+    location: 'Idyllic Moments Guest House',
+    description: 'Please join Kwadwo Akomani Preko and Mary Adubeah Yeboah as they celebrate their wedding.',
     iconName: 'GlassWater'
   },
   {
@@ -240,8 +240,8 @@ export const INITIAL_GUESTBOOK: GuestbookEntry[] = [
 
 export const INITIAL_FAQS: FaqItem[] = [
   {
-    question: 'How do we reach Villa Bellissima on Lake Como?',
-    answer: 'The most picturesque way to arrive is via our private scheduled water taxi service departing from the Bellagio main pier and Tremezzo dock. For guests driving, valet parking is available at the private gate off Via Statale 47 with golf cart transport up to the estate.'
+    question: 'Where is the wedding venue and whom can I contact?',
+    answer: 'The celebration is at Idyllic Moments Guest House. For directions or assistance, contact Barnabas on 055 707 6150 or Deborah on 054 263 7923.'
   },
   {
     question: 'What is the dress code and footwear recommendation?',
@@ -264,14 +264,14 @@ export const INITIAL_FAQS: FaqItem[] = [
 export const INITIAL_SONG_SUGGESTIONS: SongSuggestion[] = [
   {
     id: 'song-1',
-    title: 'September',
-    artist: 'Earth, Wind & Fire',
-    suggestedBy: 'Lucas Vance (Best Man)',
-    genre: 'Groove & Disco',
-    dedication: 'Because our wedding is on September 19! The entire room will be jumping.',
-    votes: 18,
-    hasVoted: false,
-    timestamp: '2 days ago'
+    title: 'My Heart Will Go On',
+    artist: 'Celine Dion',
+    suggestedBy: 'Kwadwo & Mary',
+    genre: 'Slow Dance & Romance',
+    dedication: 'Our featured wedding song.',
+    votes: 50,
+    hasVoted: true,
+    timestamp: 'Featured'
   },
   {
     id: 'song-2',

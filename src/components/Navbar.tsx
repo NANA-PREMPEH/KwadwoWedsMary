@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Mail, Heart, Camera, Calendar, MapPin, ShieldCheck, Menu, X } from 'lucide-react';
+import { Volume2, VolumeX, Mail, Heart, Camera, Calendar, MapPin, ShieldCheck, Menu, X, Moon, Sun } from 'lucide-react';
 import { soundEngine } from '../utils/audio';
 
 interface NavbarProps {
@@ -8,6 +8,9 @@ interface NavbarProps {
   isAudioPlaying: boolean;
   onToggleAudio: () => void;
   activeSection: string;
+  onNavigate: (page: string) => void;
+  isDarkMode: boolean;
+  onToggleDarkMode: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -15,16 +18,16 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAdmin,
   isAudioPlaying,
   onToggleAudio,
-  activeSection
+  activeSection,
+  onNavigate,
+  isDarkMode,
+  onToggleDarkMode
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const scrollTo = (id: string) => {
+  const navigateTo = (id: string) => {
     setMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    onNavigate(id);
   };
 
   const navItems = [
@@ -47,31 +50,31 @@ export const Navbar: React.FC<NavbarProps> = ({
           
           {/* Logo / Monogram */}
           <button 
-            onClick={() => scrollTo('hero')} 
-            className="flex items-center gap-2 group text-left cursor-pointer focus:outline-none"
+            onClick={() => navigateTo('couple')} 
+            className="flex shrink-0 items-center gap-2 group text-left cursor-pointer focus:outline-none"
           >
-            <div className="w-10 h-10 rounded-full glass glass-hover border border-[#C85A17]/35 flex items-center justify-center group-hover:border-[#C85A17] transition-all shadow-sm">
-              <span className="font-serif text-sm font-bold tracking-wider text-[#0F5132] group-hover:text-[#C85A17]">
-                J & E
+            <div className="w-10 h-10 shrink-0 rounded-full glass glass-hover border border-[#C85A17]/35 flex items-center justify-center group-hover:border-[#C85A17] transition-all shadow-sm">
+              <span className="whitespace-nowrap font-serif text-xs font-bold leading-none tracking-normal text-[#0F5132] group-hover:text-[#C85A17]">
+                K & M
               </span>
             </div>
-            <div>
-              <span className="block font-serif text-lg text-[#2c2724] leading-tight">
-                Julian & Eleanor
+            <div className="min-w-[118px]">
+              <span className="block whitespace-nowrap font-serif text-lg text-[#2c2724] leading-tight">
+                Kwadwo & Mary
               </span>
-              <span className="block text-[10px] uppercase tracking-[0.25em] text-[#C85A17] font-semibold font-sans">
-                Sept 19, 2026 · Como
+              <span className="block whitespace-nowrap text-[10px] uppercase tracking-[0.2em] text-[#C85A17] font-semibold font-sans">
+                Nov 14, 2026 · Accra
               </span>
             </div>
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-7">
+          <nav className="hidden 2xl:flex items-center space-x-5">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className={`text-xs uppercase tracking-[0.2em] font-sans font-medium transition-colors hover:text-[#C85A17] cursor-pointer ${
+                onClick={() => navigateTo(item.id)}
+                className={`whitespace-nowrap text-xs uppercase tracking-[0.2em] font-sans font-medium transition-colors hover:text-[#C85A17] cursor-pointer ${
                   activeSection === item.id ? 'text-[#0F5132] font-bold underline decoration-[#C85A17] decoration-2 underline-offset-8' : 'text-[#5c5249]'
                 }`}
               >
@@ -82,6 +85,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Action buttons (Music, Envelope, Admin, RSVP) */}
           <div className="flex items-center space-x-3">
+            <button
+              onClick={onToggleDarkMode}
+              className="p-2.5 rounded-full glass glass-hover border border-[#C85A17]/25 text-stone-700 hover:text-[#C85A17] transition-colors cursor-pointer"
+              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
             {/* Audio Toggle */}
             <button
               onClick={onToggleAudio}
@@ -132,7 +144,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Quick RSVP CTA */}
             <button
-              onClick={() => scrollTo('rsvp')}
+              onClick={() => navigateTo('rsvp')}
               className="hidden sm:inline-flex items-center justify-center px-4 py-2 bg-[#0F5132] hover:bg-[#0b3d26] text-white text-xs uppercase tracking-[0.2em] font-sans font-semibold rounded-lg transition-all cursor-pointer shadow-sm hover:shadow-md border border-[#C85A17]/35"
             >
               RSVP
@@ -141,7 +153,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Mobile menu hamburger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-lg glass border border-[#C85A17]/30 text-stone-700 hover:text-[#C85A17] transition-colors cursor-pointer"
+              className="2xl:hidden p-2 rounded-lg glass border border-[#C85A17]/30 text-stone-700 hover:text-[#C85A17] transition-colors cursor-pointer"
               aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -153,12 +165,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#C85A17]/20 glass-strong backdrop-blur-2xl px-5 py-4 space-y-3 animate-fade-in shadow-2xl">
+        <div className="2xl:hidden border-t border-[#C85A17]/20 glass-strong backdrop-blur-2xl px-5 py-4 space-y-3 animate-fade-in shadow-2xl">
           <div className="grid grid-cols-2 gap-2 pb-2 border-b border-[#C85A17]/15">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollTo(item.id)}
+                onClick={() => navigateTo(item.id)}
                 className="text-left py-2 px-2 text-xs uppercase tracking-[0.16em] text-[#423a32] hover:text-[#C85A17] font-medium transition-colors font-sans"
               >
                 {item.label}
@@ -168,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <div className="pt-2 flex flex-col gap-2">
             <button
-              onClick={() => { setMobileMenuOpen(false); scrollTo('rsvp'); }}
+              onClick={() => navigateTo('rsvp')}
               className="w-full py-2.5 bg-[#0F5132] hover:bg-[#082E1D] text-white text-xs uppercase tracking-[0.2em] rounded-lg text-center font-medium font-sans border border-[#C85A17]/30 shadow-md"
             >
               Respond to RSVP

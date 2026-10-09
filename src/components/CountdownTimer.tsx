@@ -3,9 +3,11 @@ import { Clock, Sparkles } from 'lucide-react';
 
 interface CountdownTimerProps {
   targetDate: string;
+  formattedDate: string;
+  venueName: string;
 }
 
-export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
+export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, formattedDate, venueName }) => {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -42,7 +44,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) =>
   }, [targetDate]);
 
   const units = [
-    { label: 'Days', value: timeLeft.days, helper: 'Until Lake Como' },
+    { label: 'Days', value: timeLeft.days, helper: 'Until the celebration' },
     { label: 'Hours', value: timeLeft.hours, helper: 'To Ceremony' },
     { label: 'Minutes', value: timeLeft.minutes, helper: 'To Sacred Vows' },
   ];
@@ -70,7 +72,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) =>
 
           <div className="flex items-center gap-1.5 text-xs text-[#C85A17] font-sans font-semibold tracking-wide">
             <Clock className="w-3.5 h-3.5" />
-            <span>September 19, 2026</span>
+            <span>{formattedDate}</span>
           </div>
         </div>
 
@@ -110,7 +112,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) =>
         <div className="mt-6 pt-4 border-t border-[#0F5132]/15 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-600 font-sans gap-2">
           <div className="flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#C85A17]" />
-            <span className="font-semibold text-[#0F5132]">Villa Bellissima · Lake Como, Italy</span>
+            <span className="font-semibold text-[#0F5132]">{venueName}</span>
           </div>
           <span className="text-stone-500 text-[11px] tracking-wide">
             {timeLeft.days} days and {timeLeft.hours} hours remaining

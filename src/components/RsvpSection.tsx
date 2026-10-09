@@ -16,7 +16,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
   const [attending, setAttending] = useState<'accepted' | 'declined'>('accepted');
   const [partySize, setPartySize] = useState<number>(1);
   const [plusOneName, setPlusOneName] = useState('');
-  const [dietary, setDietary] = useState<string[]>(['None']);
+  const [dietary, setDietary] = useState<string[]>(['No Preference']);
   const [dietaryNotes, setDietaryNotes] = useState('');
   const [songRequest, setSongRequest] = useState('');
   const [message, setMessage] = useState('');
@@ -25,26 +25,26 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
   const [errorMsg, setErrorMsg] = useState('');
 
   const dietaryOptions = [
-    'None',
-    'Vegetarian',
-    'Vegan',
-    'Gluten-Free',
-    'Dairy-Free',
-    'Nut Allergy',
-    'Halal',
-    'Kosher'
+    'No Preference',
+    'Jollof Rice',
+    'Waakye',
+    'Fufu & Light Soup',
+    'Banku & Tilapia',
+    'Kenkey & Fish',
+    'Vegetarian Ghanaian Meal',
+    'Special Dietary Needs'
   ];
 
   const handleToggleDietary = (opt: string) => {
-    if (opt === 'None') {
-      setDietary(['None']);
+    if (opt === 'No Preference') {
+      setDietary(['No Preference']);
       return;
     }
 
-    const filtered = dietary.filter((d) => d !== 'None');
+    const filtered = dietary.filter((d) => d !== 'No Preference');
     if (filtered.includes(opt)) {
       const next = filtered.filter((d) => d !== opt);
-      setDietary(next.length === 0 ? ['None'] : next);
+      setDietary(next.length === 0 ? ['No Preference'] : next);
     } else {
       setDietary([...filtered, opt]);
     }
@@ -98,7 +98,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
     setAttending('accepted');
     setPartySize(1);
     setPlusOneName('');
-    setDietary(['None']);
+    setDietary(['No Preference']);
     setDietaryNotes('');
     setSongRequest('');
     setMessage('');
@@ -387,7 +387,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
                 <div>
                   <label className="block text-xs uppercase tracking-[0.16em] font-semibold text-[#5c4e42] mb-2 font-sans flex items-center gap-1.5">
                     <Utensils className="w-3.5 h-3.5 text-[#C85A17]" />
-                    <span>Dietary Preferences / Restrictions</span>
+                    <span>Preferred Ghanaian Dishes</span>
                   </label>
 
                   <div className="flex flex-wrap gap-2">

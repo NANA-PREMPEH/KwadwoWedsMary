@@ -66,35 +66,6 @@ export const DressCodeSection: React.FC<DressCodeSectionProps> = ({ dressCode })
           </div>
         </div>
 
-        {/* Color Palette Swatches */}
-        <div className="glass p-6 sm:p-8 rounded-2xl border border-[#C85A17]/20 shadow-sm mb-10 backdrop-blur-xl">
-          <div className="text-center mb-6">
-            <h3 className="text-xs uppercase tracking-[0.25em] font-bold text-[#0F5132] font-sans">
-              Curated Nuances & Accent Tones
-            </h3>
-            <p className="text-xs text-stone-600 font-sans mt-1">
-              Harmonious complementary shades across the wedding palette:
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
-            {dressCode.colors.map((c) => (
-              <div key={c.name} className="flex flex-col items-center group">
-                <div
-                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl shadow-md border-2 border-white transform transition-transform group-hover:scale-105 ring-1 ring-[#C85A17]/20"
-                  style={{ backgroundColor: c.hex }}
-                />
-                <span className="text-xs font-serif font-semibold text-[#2c241d] mt-2.5 text-center">
-                  {c.name}
-                </span>
-                <span className="text-[10px] text-stone-500 font-mono">
-                  {c.hex}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Two-column Attire Breakdown */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-6 glass glass-hover rounded-2xl border-t-4 border-t-[#0F5132] border border-[#0F5132]/25 shadow-sm backdrop-blur-xl">
@@ -105,19 +76,19 @@ export const DressCodeSection: React.FC<DressCodeSectionProps> = ({ dressCode })
             <ul className="space-y-3 text-xs text-[#5e5146] font-sans">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0F5132] mt-0.5 shrink-0" />
-                <span>Deep emerald green velvet or wool dinner jackets, or classic black tuxedos</span>
+                <span>Smartly tailored kaftans, agbada, or formal African-print attire</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#C85A17] mt-0.5 shrink-0" />
-                <span>Burnt orange or rust silk pocket squares, cummerbunds, or autumnal boutonnieres</span>
+                <span>Kente cloth or rich Ankara accents are warmly welcomed</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-stone-400 mt-0.5 shrink-0" />
-                <span>Pristine crisp white tailored dress shirts with black or gold studs</span>
+                <span>Traditional smocks, shirts, or neatly tailored trousers are all suitable</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0F5132] mt-0.5 shrink-0" />
-                <span>Polished black leather dress shoes or dark velvet slippers</span>
+                <span>Complete your look with clean formal shoes or traditional sandals</span>
               </li>
             </ul>
           </div>
@@ -130,19 +101,19 @@ export const DressCodeSection: React.FC<DressCodeSectionProps> = ({ dressCode })
             <ul className="space-y-3 text-xs text-[#5e5146] font-sans">
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#0F5132] mt-0.5 shrink-0" />
-                <span>Floor-length gowns in rich emerald green silk, velvet, or satin</span>
+                <span>Elegant Kente, lace, or Ankara dresses are warmly welcomed</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#C85A17] mt-0.5 shrink-0" />
-                <span>Burnt orange, terracotta, or bronze formal maxi dresses and evening capes</span>
+                <span>Celebrate in vibrant Ghanaian colours and beautiful African prints</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-stone-400 mt-0.5 shrink-0" />
-                <span>Crisp white or pearl clutch purses, shawls, and jewelry accents</span>
+                <span>Gele headwraps, beads, and tasteful traditional accessories are encouraged</span>
               </li>
               <li className="flex items-start gap-2">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#C85A17] mt-0.5 shrink-0" />
-                <span>We kindly remind that full-white and ivory gowns are reserved for the bride</span>
+                <span>We kindly remind guests that full-white attire is reserved for the bride</span>
               </li>
             </ul>
           </div>
@@ -152,7 +123,7 @@ export const DressCodeSection: React.FC<DressCodeSectionProps> = ({ dressCode })
         <div className="mt-6 p-4 rounded-xl glass border border-[#C85A17]/30 flex items-start gap-3 shadow-xs backdrop-blur-xl">
           <AlertCircle className="w-4 h-4 text-[#C85A17] shrink-0 mt-0.5" />
           <p className="text-xs text-[#524438] font-sans">
-            <strong>Footwear & Grounds Advisory:</strong> Villa Bellissima features historic gravel walks and lakeside stone steps. Block heels, platform sandals, or wedges will keep you comfortable throughout the evening.
+            <strong>Venue Advisory:</strong> The celebration will be held at Idyllic Moments Guest House. Please choose comfortable footwear suitable for the venue and the day’s celebrations.
           </p>
         </div>
 

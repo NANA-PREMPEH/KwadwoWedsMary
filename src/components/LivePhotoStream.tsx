@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { WeddingPhoto, PhotoCategory } from '../types/wedding';
+import { WeddingPhoto, PhotoCategory, PhotoFilter } from '../types/wedding';
 import { soundEngine } from '../utils/audio';
 import {
   Camera,
@@ -41,6 +41,12 @@ const SAMPLE_GUEST_PHOTOS = [
   }
 ];
 
+const PHOTO_FILTERS: { value: PhotoFilter; label: string; cssFilter: string }[] = [
+  { value: 'none', label: 'Original', cssFilter: 'none' },
+  { value: 'black-and-white', label: 'Black & White', cssFilter: 'grayscale(1)' },
+  { value: 'sepia', label: 'Sepia', cssFilter: 'sepia(0.85)' },
+];
+
 export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
   photos,
   onAddPhoto,
@@ -56,6 +62,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
   const [uploaderName, setUploaderName] = useState('');
   const [caption, setCaption] = useState('');
   const [category, setCategory] = useState<PhotoCategory>('candid');
+  const [photoFilter, setPhotoFilter] = useState<PhotoFilter>('none');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
@@ -64,6 +71,10 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
   const filteredPhotos = selectedCategory === 'all'
     ? photos
     : photos.filter((p) => p.category === selectedCategory);
+
+  const getPhotoFilterStyle = (filter: PhotoFilter = 'none') => ({
+    filter: PHOTO_FILTERS.find((option) => option.value === filter)?.cssFilter ?? 'none'
+  });
 
   const currentLightboxPhoto = lightboxIndex !== null && filteredPhotos[lightboxIndex]
     ? filteredPhotos[lightboxIndex]
@@ -161,7 +172,8 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
       category,
       timestamp: 'Just now',
       likes: 1,
-      isLikedByUser: true
+      isLikedByUser: true,
+      filter: photoFilter
     };
 
     onAddPhoto(newPhoto);
@@ -171,6 +183,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
     setImagePreview(null);
     setCaption('');
     setUploaderName('');
+    setPhotoFilter('none');
     setIsUploadingModal(false);
   };
 
@@ -295,6 +308,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
                 src={photo.url}
                 alt={photo.caption}
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                style={getPhotoFilterStyle(photo.filter)}
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-4">
@@ -361,8 +375,8 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
 
       {/* Upload Modal */}
       {isUploadingModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-fade-in">
-          <div className="glass-strong rounded-3xl border border-[#C85A17]/35 max-w-lg w-full p-6 sm:p-8 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/35 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white/45 backdrop-blur-2xl rounded-3xl border border-white/55 max-w-lg w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain p-6 sm:p-8 shadow-2xl relative">
             <button
               onClick={() => setIsUploadingModal(false)}
               className="absolute top-4 right-4 p-2 text-stone-400 hover:text-[#0F5132] rounded-full transition-colors cursor-pointer"
@@ -393,7 +407,12 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
 
                 {imagePreview ? (
                   <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-[#C85A17]/30 shadow-md group">
-                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                      style={getPhotoFilterStyle(photoFilter)}
+                    />
                     <button
                       type="button"
                       onClick={() => setImagePreview(null)}
@@ -435,6 +454,31 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
                         className="aspect-[4/3] rounded-xl overflow-hidden border border-[#C85A17]/25 hover:border-[#C85A17] hover:scale-[1.02] transition-all cursor-pointer"
                       >
                         <img src={s.url} alt="Preset" className="w-full h-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Photo filter selection */}
+              {imagePreview && (
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-[#0F5132] mb-2 font-sans">
+                    Apply a Filter
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {PHOTO_FILTERS.map((option) => (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => setPhotoFilter(option.value)}
+                        className={`rounded-xl border px-2 py-2 text-xs font-semibold transition-all cursor-pointer ${
+                          photoFilter === option.value
+                            ? 'border-[#C85A17] bg-[#C85A17]/10 text-[#C85A17] ring-1 ring-[#C85A17]/30'
+                            : 'border-[#0F5132]/20 bg-white/70 text-[#0F5132] hover:border-[#C85A17]/60'
+                        }`}
+                      >
+                        {option.label}
                       </button>
                     ))}
                   </div>
@@ -516,7 +560,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
           <div className="w-full max-w-7xl mx-auto flex items-center justify-between z-20 pb-2 border-b border-white/10">
             {/* Left: Counter & Category Badge */}
             <div className="flex items-center gap-3">
-              <span className="glass px-3 py-1 rounded-full text-xs font-mono font-medium text-white/90 border border-white/20 backdrop-blur-md">
+              <span className="bg-black/25 px-3 py-1 rounded-full text-xs font-mono font-medium text-white/90 border border-white/30 backdrop-blur-md">
                 {lightboxIndex + 1} / {filteredPhotos.length}
               </span>
               <span className="bg-[#0F5132]/80 text-emerald-200 border border-[#0F5132] px-3 py-1 rounded-full text-[11px] uppercase tracking-wider font-sans font-semibold backdrop-blur-sm">
@@ -534,7 +578,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
                 download="wedding-photo.jpg"
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 sm:px-3 sm:py-1.5 glass glass-hover text-white/90 hover:text-white rounded-full border border-white/20 transition-all flex items-center gap-1.5 text-xs font-sans cursor-pointer backdrop-blur-md"
+                className="p-2 sm:px-3 sm:py-1.5 bg-black/25 hover:bg-black/55 text-white/90 hover:text-white rounded-full border border-white/30 transition-all flex items-center gap-1.5 text-xs font-sans cursor-pointer backdrop-blur-md"
                 title="Download or open original full resolution image"
               >
                 <Download className="w-4 h-4 text-[#C85A17]" />
@@ -543,7 +587,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
 
               <button
                 onClick={handleCloseLightbox}
-                className="p-2 glass glass-hover hover:bg-rose-900/40 text-white rounded-full border border-white/20 transition-all cursor-pointer backdrop-blur-md"
+                className="p-2 bg-black/25 hover:bg-rose-900/50 text-white rounded-full border border-white/30 transition-all cursor-pointer backdrop-blur-md"
                 aria-label="Close full-screen photo"
                 title="Close (Escape)"
               >
@@ -560,7 +604,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
               onClick={handlePrevPhoto}
               aria-label="Previous photo (Left Arrow key)"
               title="Previous photo (←)"
-              className="absolute left-1 sm:left-4 z-30 p-3 sm:p-4 rounded-full glass hover:bg-[#C85A17] text-white border border-white/25 shadow-2xl backdrop-blur-xl transition-all duration-200 hover:scale-110 active:scale-90 cursor-pointer group"
+              className="absolute left-1 sm:left-4 z-30 p-3 sm:p-4 rounded-full bg-black/25 hover:bg-black/55 text-white border border-white/35 shadow-2xl backdrop-blur-xl transition-all duration-200 hover:scale-110 active:scale-90 cursor-pointer group"
             >
               <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 group-hover:-translate-x-0.5 transition-transform" />
             </button>
@@ -572,6 +616,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
                 src={currentLightboxPhoto.url}
                 alt={currentLightboxPhoto.caption}
                 className="max-h-[64vh] sm:max-h-[68vh] max-w-full rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] object-contain border border-white/15 transition-all duration-300"
+                style={getPhotoFilterStyle(currentLightboxPhoto.filter)}
               />
             </div>
 
@@ -580,7 +625,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
               onClick={handleNextPhoto}
               aria-label="Next photo (Right Arrow key)"
               title="Next photo (→)"
-              className="absolute right-1 sm:right-4 z-30 p-3 sm:p-4 rounded-full glass hover:bg-[#C85A17] text-white border border-white/25 shadow-2xl backdrop-blur-xl transition-all duration-200 hover:scale-110 active:scale-90 cursor-pointer group"
+              className="absolute right-1 sm:right-4 z-30 p-3 sm:p-4 rounded-full bg-black/25 hover:bg-black/55 text-white border border-white/35 shadow-2xl backdrop-blur-xl transition-all duration-200 hover:scale-110 active:scale-90 cursor-pointer group"
             >
               <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 group-hover:translate-x-0.5 transition-transform" />
             </button>
@@ -591,7 +636,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
           <div className="w-full max-w-4xl mx-auto z-20 flex flex-col gap-2">
             
             {/* Caption & Details Floating Glass Box */}
-            <div className="glass-strong backdrop-blur-2xl rounded-2xl border border-white/20 p-3.5 sm:p-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="bg-black/75 backdrop-blur-2xl rounded-2xl border border-white/25 p-3.5 sm:p-4 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="text-center sm:text-left">
                 <p className="font-serif italic text-base sm:text-lg text-white">
                   “{currentLightboxPhoto.caption}”
@@ -608,7 +653,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
                   className={`px-4 py-2 rounded-xl text-xs font-sans font-medium flex items-center gap-2 cursor-pointer transition-all active:scale-95 border ${
                     currentLightboxPhoto.isLikedByUser
                       ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-xs'
-                      : 'glass hover:bg-white/20 text-white border-white/20'
+                      : 'bg-white/10 hover:bg-white/20 text-white border-white/30'
                   }`}
                 >
                   <Heart className={`w-4 h-4 ${currentLightboxPhoto.isLikedByUser ? 'fill-rose-500 text-rose-500' : 'text-white'}`} />
@@ -637,7 +682,12 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
                     }`}
                     title={`Go to photo ${idx + 1}`}
                   >
-                    <img src={thumb.url} alt="" className="w-full h-full object-cover" />
+                    <img
+                      src={thumb.url}
+                      alt=""
+                      className="w-full h-full object-cover"
+                      style={getPhotoFilterStyle(thumb.filter)}
+                    />
                   </button>
                 ))}
               </div>
@@ -655,7 +705,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
           <div className="w-full flex items-center justify-between text-white/80 border-b border-white/10 pb-4">
             <div className="flex items-center gap-3">
               <span className="font-serif text-xl tracking-wider text-[#C85A17] font-semibold">
-                Julian & Eleanor
+                Kwadwo & Mary
               </span>
               <span className="text-xs uppercase tracking-[0.2em] text-white/60 font-sans">
                 · Live Wedding Projector Stream
@@ -668,7 +718,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
               </span>
               <button
                 onClick={() => setIsSlideshowActive(false)}
-                className="p-2 rounded-full glass hover:bg-white/20 text-white transition-colors cursor-pointer"
+                className="p-2 rounded-full bg-black/25 hover:bg-black/55 text-white border border-white/30 backdrop-blur-md transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -681,6 +731,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
               src={filteredPhotos[slideshowIndex].url}
               alt={filteredPhotos[slideshowIndex].caption}
               className="max-h-[68vh] rounded-2xl shadow-2xl object-contain border-2 border-white/15 transition-all duration-700"
+              style={getPhotoFilterStyle(filteredPhotos[slideshowIndex].filter)}
             />
           </div>
 

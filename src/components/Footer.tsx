@@ -1,11 +1,12 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
+import { WeddingDetails } from '../types/wedding';
 
 interface FooterProps {
-  hashtag: string;
+  details: WeddingDetails;
 }
 
-export const Footer: React.FC<FooterProps> = ({ hashtag }) => {
+export const Footer: React.FC<FooterProps> = ({ details }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -16,21 +17,21 @@ export const Footer: React.FC<FooterProps> = ({ hashtag }) => {
         
         {/* Monogram */}
         <div className="w-12 h-12 rounded-full glass-emerald border border-[#C85A17]/50 flex items-center justify-center mx-auto text-white font-serif text-base tracking-widest shadow-lg">
-          J & E
+          K & M
         </div>
 
         <div>
           <h4 className="font-serif text-2xl text-white font-medium">
-            Julian Vance & Eleanor St. Claire
+            {details.coupleNames}
           </h4>
           <p className="text-xs uppercase tracking-[0.25em] text-[#E06D28] mt-1 font-sans font-semibold">
-            September 19, 2026 · Villa Bellissima · Lake Como, Italy
+            {details.date} · {details.ceremonyVenue.name} · {details.ceremonyVenue.city}, {details.ceremonyVenue.country}
           </p>
         </div>
 
         {/* Wedding Hashtag */}
         <div className="inline-block px-5 py-1.5 rounded-full glass border border-[#C85A17]/40 text-[#E06D28] text-xs font-mono font-bold tracking-wide shadow-sm">
-          {hashtag}
+          {details.hashtag}
         </div>
 
         <p className="font-serif italic text-sm text-[#B4D0C2] max-w-md mx-auto">

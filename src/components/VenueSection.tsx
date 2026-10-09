@@ -22,48 +22,16 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
 
   const spots: VenueSpot[] = [
     {
-      id: 'pier',
-      name: 'Private Water Pier',
-      role: 'Arrival & Boat Shuttles',
-      x: 24,
-      y: 72,
-      description: 'The historic stone jetty where private wooden speedboats dock from Bellagio and Tremezzo.'
-    },
-    {
       id: 'ceremony',
-      name: 'Loggia Durini Terrace',
-      role: 'Ceremony & Vows',
-      x: 48,
-      y: 42,
-      description: 'Triple-arched open loggia perched high on the promontory with panoramic views across both arms of Lake Como.'
-    },
-    {
-      id: 'lawn',
-      name: 'Belvedere Lemon Grove',
-      role: 'Sunset Cocktail Hour',
-      x: 65,
-      y: 58,
-      description: 'Terraced lawns shaded by citrus trees and sculpted holm oaks, featuring sunset acoustic music.'
-    },
-    {
-      id: 'pavilion',
-      name: 'The Glass Pavilion',
-      role: 'Gala Dinner & Dancing',
-      x: 76,
-      y: 35,
-      description: 'Chandelier-lit transparent structure seamlessly blending indoor comfort with romantic gardens.'
-    },
-    {
-      id: 'gate',
-      name: 'Valet & Main Gate',
-      role: 'Vehicle Drop-Off',
-      x: 18,
-      y: 26,
-      description: 'Private gated entrance on Via Statale with golf cart shuttle up the shaded path.'
+      name: 'Idyllic Moments Guest House',
+      role: 'Wedding Ceremony · Saturday, November 14, 2026 · 9:00 AM',
+      x: 50,
+      y: 50,
+      description: 'Join Kwadwo Akomani Preko and Mary Adubeah Yeboah as they celebrate their wedding.'
     }
   ];
 
-  const currentSpot = spots.find((s) => s.id === selectedSpot) || spots[1];
+  const currentSpot = spots.find((s) => s.id === selectedSpot) || spots[0];
 
   return (
     <section id="venue" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -71,10 +39,10 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
       {/* Section Header */}
       <div className="text-center mb-12">
         <span className="text-[11px] uppercase tracking-[0.3em] text-[#C85A17] font-semibold block mb-2 font-sans">
-          The Destination & Accommodations
+          Wedding Venue
         </span>
         <h2 className="font-serif text-3xl sm:text-5xl text-[#0F5132] font-normal">
-          Villa Bellissima & Lake Como
+          Idyllic Moments Guest House
         </h2>
         <div className="flex items-center justify-center gap-1.5 my-4">
           <span className="w-8 h-0.5 bg-[#C85A17]" />
@@ -82,7 +50,7 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
           <span className="w-8 h-0.5 bg-[#C85A17]" />
         </div>
         <p className="font-serif italic text-base text-[#524438] max-w-xl mx-auto">
-          {details.ceremonyVenue.address} · Tremezzina & Central Lake Como
+          {details.ceremonyVenue.address}
         </p>
 
         {/* View Switcher Tabs */}
@@ -96,7 +64,7 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
             }`}
           >
             <Map className="w-4 h-4 text-[#E06D28]" />
-            <span>Regional Map: Hotel, Ceremony & Reception Pins</span>
+            <span>Venue Location & Ceremony Details</span>
           </button>
           
           <button
@@ -108,7 +76,7 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
             }`}
           >
             <Compass className="w-4 h-4 text-[#E06D28]" />
-            <span>Villa Estate Grounds</span>
+            <span>Wedding Program</span>
           </button>
         </div>
       </div>
@@ -129,11 +97,11 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
                 <div className="flex items-center gap-2 text-[#0F5132]">
                   <Compass className="w-4 h-4 text-[#C85A17]" />
                   <span className="text-xs uppercase tracking-[0.18em] font-semibold font-sans">
-                    Villa Bellissima Historic Grounds
+                    Idyllic Moments Guest House
                   </span>
                 </div>
                 <span className="text-[11px] text-[#C85A17] font-sans font-medium">
-                  Tap pins to inspect locations
+                  Wedding program details
                 </span>
               </div>
 
@@ -151,7 +119,7 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
                 />
 
                 <div className="absolute bottom-4 right-4 text-white/70 text-[10px] tracking-[0.3em] uppercase font-sans font-medium">
-                  Lake Como Waters
+                  Kwadwo & Mary · November 14, 2026
                 </div>
 
                 {spots.map((spot) => {
@@ -214,15 +182,15 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
             <div className="lg:col-span-5 space-y-4">
               <div className="p-6 bg-white rounded-3xl border-2 border-[#0F5132] shadow-md ring-1 ring-[#C85A17]/20 space-y-3">
                 <h3 className="font-serif text-2xl text-[#0F5132] font-semibold">
-                  Estate Exploration Guide
+                  Wedding Program
                 </h3>
                 <p className="text-xs text-stone-600 font-sans leading-relaxed">
-                  Villa Bellissima occupies the wooded tip of the Lavedo peninsula. Guests arriving by boat land at the private jetty, with a scenic moss-lined pathway leading past lemon groves to the Loggia Durini.
+                  Join Kwadwo Akomani Preko and Mary Adubeah Yeboah for their wedding ceremony at Idyllic Moments Guest House on Saturday, November 14, 2026 at 9:00 AM.
                 </p>
                 <div className="pt-2 space-y-2">
                   <div className="p-3 bg-[#FDFBF7] rounded-xl border border-stone-200 text-xs">
-                    <strong className="text-[#0F5132] block">Gentle Footwear Note:</strong>
-                    Historic gravel paths and stone steps connect the terraces. Block heels, dress flats, or wedges in emerald, orange, or ivory are highly recommended.
+                    <strong className="text-[#0F5132] block">Venue:</strong>
+                    Idyllic Moments Guest House. Use the Open in Maps button for directions.
                   </div>
                 </div>
               </div>
@@ -241,10 +209,10 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
               <div className="flex items-center gap-2 text-[#0F5132]">
                 <Sun className="w-4 h-4 text-[#C85A17]" />
                 <span className="text-xs uppercase tracking-[0.2em] font-semibold font-sans">
-                  September Weather
+                  Wedding Day
                 </span>
               </div>
-              <span className="text-xs font-bold text-[#C85A17] font-sans">23°C / 73°F</span>
+              <span className="text-xs font-bold text-[#C85A17] font-sans">9:00 AM</span>
             </div>
 
             <div className="flex items-start gap-4">
@@ -253,17 +221,17 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
               </div>
               <div>
                 <p className="text-sm font-serif text-[#0F5132] font-semibold">
-                  Late Summer Sun & Lake Breeze
+                  Saturday, November 14, 2026
                 </p>
                 <p className="text-xs text-stone-600 font-sans mt-1 leading-relaxed">
-                  Pleasantly warm during the ceremony. A light wrap or evening jacket in burnt orange or white is recommended for the terrace breeze.
+                  Please arrive on time to celebrate the wedding of Kwadwo Akomani Preko and Mary Adubeah Yeboah.
                 </p>
               </div>
             </div>
           </div>
 
           <div className="mt-4 pt-3 border-t border-stone-200/50 text-[11px] text-stone-400 font-sans">
-            Sunset at 19:22 · Sunset aperitivo starts at 17:45
+            Idyllic Moments Guest House
           </div>
         </div>
 
@@ -274,20 +242,20 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
               <div className="flex items-center gap-2 text-[#0F5132]">
                 <Plane className="w-4 h-4 text-[#C85A17]" />
                 <span className="text-xs uppercase tracking-[0.2em] font-semibold font-sans">
-                  Airports & Transit
+                  Venue Location
                 </span>
               </div>
-              <span className="text-xs font-bold text-[#0F5132] font-sans">MXP & LIN</span>
+              <span className="text-xs font-bold text-[#0F5132] font-sans">Accra</span>
             </div>
 
             <p className="text-xs text-stone-600 font-sans leading-relaxed">
-              Milan Malpensa (MXP) is ~75 mins away. Milan Linate (LIN) is ~85 mins. Private chauffeured Mercedes vans or direct Trenord trains to Como San Giovanni are available.
+              The wedding will be held at Idyllic Moments Guest House. Use the venue map link for directions.
             </p>
           </div>
 
           <div className="mt-4 pt-3 border-t border-stone-200/50 flex items-center gap-2 text-xs text-[#0F5132] font-semibold font-sans">
             <Car className="w-3.5 h-3.5 text-[#C85A17]" />
-            <span>Valet parking available at Villa Main Gate</span>
+            <span>Open the map for directions to the venue</span>
           </div>
         </div>
 
@@ -298,24 +266,24 @@ export const VenueSection: React.FC<VenueSectionProps> = ({ details }) => {
               <div className="flex items-center gap-2 text-[#0F5132]">
                 <Ship className="w-4 h-4 text-[#C85A17]" />
                 <span className="text-xs uppercase tracking-[0.2em] font-semibold font-sans">
-                  Shuttles & Booking Code
+                  Need Assistance?
                 </span>
               </div>
-              <span className="text-xs font-bold text-[#C85A17] font-sans">Complimentary</span>
+              <span className="text-xs font-bold text-[#C85A17] font-sans">Contact Us</span>
             </div>
 
             <p className="text-xs text-stone-600 font-sans leading-relaxed">
-              Private chartered Riva speedboats run continuously between Bellagio, Menaggio, Grand Hotel Tremezzo, and the Villa pier from 15:00 to 02:00.
+              For directions or wedding-day assistance, please contact either of the coordinators below.
             </p>
 
             <div className="mt-3 p-2.5 rounded-xl glass border border-[#C85A17]/30 text-xs font-sans">
-              <span className="text-stone-500 block text-[10px] uppercase tracking-[0.16em]">Hotel Room Block Code:</span>
-              <strong className="text-[#C85A17] text-sm tracking-wider font-mono">JULIANELEANOR</strong>
+              <span className="text-stone-500 block text-[10px] uppercase tracking-[0.16em]">Barnabas</span>
+              <strong className="text-[#C85A17] text-sm tracking-wider font-mono">055 707 6150</strong>
             </div>
           </div>
 
           <div className="mt-4 pt-3 border-t border-stone-200/50 text-[11px] text-stone-400 font-sans">
-            Rooms reserved at Grand Hotel Victoria & Serbelloni
+            Deborah · 054 263 7923
           </div>
         </div>
 
