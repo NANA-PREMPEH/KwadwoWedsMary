@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { soundEngine } from '../utils/audio';
 import { Sparkles, X, Music, ArrowRight, RotateCcw } from 'lucide-react';
+import monogramLogo from '../assets/kwadwo-mary-monogram.png';
 
 interface EnvelopeModalProps {
   isOpen: boolean;
@@ -37,12 +38,6 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
   }, [isOpen]);
 
   if (!isOpen) return null;
-
-  const initials = coupleNames
-    .split('&')
-    .map((name) => name.trim().charAt(0))
-    .filter(Boolean)
-    .join(' & ');
 
   const handleBreakSeal = () => {
     if (isBroken) return;
@@ -246,12 +241,13 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                   {/* Wax Seal Disc */}
                   <div className="relative w-22 h-22 sm:w-24 sm:h-24 rounded-full bg-gradient-to-tr from-[#082E1D] via-[#0F5132] to-[#166640] border-[2.5px] sm:border-[3px] border-[#C85A17] shadow-[0_14px_28px_rgba(15,81,50,0.35),_0_6px_10px_rgba(0,0,0,0.22)] flex flex-col items-center justify-center transform transition-transform duration-300 group-hover:scale-105 active:scale-95">
                     
-                    {/* Inner delicate dashed ring */}
-                    <div className="w-[72%] h-[72%] rounded-full border border-dashed border-white/60 flex items-center justify-center shadow-inner">
-                      {/* Serif Monogram Initials */}
-                      <span className="font-serif font-bold text-xl sm:text-2xl text-white tracking-widest drop-shadow-sm select-none">
-                        {initials}
-                      </span>
+                    {/* Custom K&M wedding monogram */}
+                    <div className="w-[78%] h-[78%] overflow-hidden rounded-full border border-dashed border-white/45 flex items-center justify-center shadow-inner">
+                      <img
+                        src={monogramLogo}
+                        alt="Kwadwo and Mary monogram"
+                        className="w-full h-full scale-[1.7] object-contain select-none"
+                      />
                     </div>
 
                     {/* Organic Melted Wax Drops (matching image reference at ~2 o'clock and ~8 o'clock) */}

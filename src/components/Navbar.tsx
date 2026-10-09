@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Volume2, VolumeX, Mail, Heart, Camera, Calendar, MapPin, ShieldCheck, Menu, X, Moon, Sun } from 'lucide-react';
 import { soundEngine } from '../utils/audio';
+import monogramLogo from '../assets/kwadwo-mary-monogram.png';
 
 interface NavbarProps {
   onOpenEnvelope: () => void;
@@ -53,10 +54,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => navigateTo('couple')} 
             className="flex shrink-0 items-center gap-2 group text-left cursor-pointer focus:outline-none"
           >
-            <div className="w-10 h-10 shrink-0 rounded-full glass glass-hover border border-[#C85A17]/35 flex items-center justify-center group-hover:border-[#C85A17] transition-all shadow-sm">
-              <span className="whitespace-nowrap font-serif text-xs font-bold leading-none tracking-normal text-[#0F5132] group-hover:text-[#C85A17]">
-                K & M
-              </span>
+            <div className="w-10 h-10 shrink-0 overflow-hidden rounded-full bg-[#063b2b] border border-[#C85A17]/60 flex items-center justify-center group-hover:border-[#E7C56A] transition-all shadow-sm">
+              <img
+                src={monogramLogo}
+                alt="Kwadwo and Mary monogram"
+                className="w-full h-full scale-[1.65] object-contain transition-transform duration-300 group-hover:scale-[1.78]"
+              />
             </div>
             <div className="min-w-[118px]">
               <span className="block whitespace-nowrap font-serif text-lg text-[#2c2724] leading-tight">
@@ -97,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Audio Toggle */}
             <button
               onClick={onToggleAudio}
-              className={`p-2.5 rounded-full glass glass-hover transition-all cursor-pointer flex items-center gap-2 ${
+              className={`hidden sm:flex p-2.5 rounded-full glass glass-hover transition-all cursor-pointer items-center gap-2 ${
                 isAudioPlaying 
                   ? 'border-[#0F5132] bg-[#f4f8f5]/80 text-[#0F5132] shadow-[0_0_15px_rgba(15,81,50,0.15)]' 
                   : 'border-[#C85A17]/25 text-stone-600 hover:text-stone-900'
@@ -125,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Replay Envelope */}
             <button
               onClick={onOpenEnvelope}
-              className="p-2.5 rounded-full glass glass-hover border border-[#C85A17]/25 text-stone-700 hover:text-[#C85A17] transition-colors cursor-pointer"
+              className="hidden sm:flex p-2.5 rounded-full glass glass-hover border border-[#C85A17]/25 text-stone-700 hover:text-[#C85A17] transition-colors cursor-pointer"
               title="View Envelope & Wax Seal"
               aria-label="Open wax seal envelope"
             >
@@ -135,7 +138,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Couple/Admin Toggle */}
             <button
               onClick={onOpenAdmin}
-              className="p-2.5 rounded-full glass glass-hover border border-[#C85A17]/25 text-stone-700 hover:text-[#0F5132] transition-colors cursor-pointer"
+              className="hidden sm:flex p-2.5 rounded-full glass glass-hover border border-[#C85A17]/25 text-stone-700 hover:text-[#0F5132] transition-colors cursor-pointer"
               title="Couple's Organizer & Guest Dashboard"
               aria-label="Couple organizer dashboard"
             >
@@ -191,6 +194,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Mail className="w-3.5 h-3.5" />
               <span>View Wax Seal Envelope</span>
+            </button>
+            <button
+              onClick={onToggleAudio}
+              className="sm:hidden w-full py-2 glass border border-[#C85A17]/30 text-[#423a32] hover:text-[#C85A17] text-xs uppercase tracking-[0.18em] rounded-lg text-center flex items-center justify-center gap-2 font-sans font-medium"
+            >
+              {isAudioPlaying ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+              <span>{isAudioPlaying ? 'Pause Music' : 'Play Music'}</span>
             </button>
           </div>
         </div>

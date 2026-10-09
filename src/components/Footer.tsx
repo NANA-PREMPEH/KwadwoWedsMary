@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUp } from 'lucide-react';
 import { WeddingDetails } from '../types/wedding';
+import monogramLogo from '../assets/kwadwo-mary-monogram.png';
 
 interface FooterProps {
   details: WeddingDetails;
@@ -16,8 +17,12 @@ export const Footer: React.FC<FooterProps> = ({ details }) => {
       <div className="max-w-4xl mx-auto text-center space-y-6">
         
         {/* Monogram */}
-        <div className="w-12 h-12 rounded-full glass-emerald border border-[#C85A17]/50 flex items-center justify-center mx-auto text-white font-serif text-base tracking-widest shadow-lg">
-          K & M
+        <div className="w-12 h-12 overflow-hidden rounded-full bg-[#063b2b] border border-[#C85A17]/60 flex items-center justify-center mx-auto shadow-lg">
+          <img
+            src={monogramLogo}
+            alt="Kwadwo and Mary monogram"
+            className="w-full h-full scale-[1.65] object-contain"
+          />
         </div>
 
         <div>

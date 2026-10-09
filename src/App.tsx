@@ -16,6 +16,7 @@ import {
 } from './data/initialData';
 import { WeddingDetails, RsvpEntry, WeddingPhoto, GuestbookEntry, SongSuggestion, SeatingTable } from './types/wedding';
 import { soundEngine } from './utils/audio';
+import { weddingApi } from './services/weddingApi';
 
 import { Navbar } from './components/Navbar';
 import { EnvelopeModal } from './components/EnvelopeModal';
@@ -31,6 +32,7 @@ import { GuestbookSection } from './components/GuestbookSection';
 import { FaqRegistrySection } from './components/FaqRegistrySection';
 import { OrganizerModal } from './components/OrganizerModal';
 import { Footer } from './components/Footer';
+import { CookieConsent } from './components/CookieConsent';
 import { BellRing, X } from 'lucide-react';
 
 const PAGE_IDS = ['couple', 'schedule', 'venue', 'dress-code', 'rsvp', 'seating-chart', 'music-player', 'photos', 'guestbook', 'faq'] as const;
@@ -216,6 +218,19 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  // Use PostgreSQL as the shared source of RSVP and photo data when the API is available.
+  // Local browser storage remains a graceful fallback during development or if the API is offline.
+  useEffect(() => {
+    void Promise.all([weddingApi.getRsvps(), weddingApi.getPhotos()])
+      .then(([databaseRsvps, databasePhotos]) => {
+        if (databaseRsvps.length > 0) setRsvps(databaseRsvps);
+        if (databasePhotos.length > 0) setPhotos(databasePhotos);
+      })
+      .catch(() => {
+        // The invitation remains usable before a database has been configured.
+      });
+  }, []);
+
   useEffect(() => {
     if (hasSubmittedRsvp) return;
 
@@ -236,6 +251,9 @@ export default function App() {
   // Handlers for dynamic actions
   const handleAddRsvp = (newRsvp: RsvpEntry) => {
     setRsvps((prev) => [newRsvp, ...prev]);
+    void weddingApi.saveRsvp(newRsvp).catch(() => {
+      // Keep the guest's response safely in local storage if the API is temporarily unavailable.
+    });
     setHasSubmittedRsvp(true);
     setShowRsvpReminder(false);
 
@@ -299,6 +317,9 @@ export default function App() {
 
   const handleAddPhoto = (newPhoto: WeddingPhoto) => {
     setPhotos((prev) => [newPhoto, ...prev]);
+    void weddingApi.savePhoto(newPhoto).catch(() => {
+      // The local gallery remains available if the API is offline.
+    });
   };
 
   const handleLikePhoto = (id: string) => {
@@ -482,6 +503,8 @@ export default function App() {
         onUpdateDetails={setDetails}
         onDeleteRsvp={handleDeleteRsvp}
       />
+
+      <CookieConsent />
 
     </div>
   );
