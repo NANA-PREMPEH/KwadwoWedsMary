@@ -92,7 +92,9 @@ export default function App() {
   const [photos, setPhotos] = useState<WeddingPhoto[]>(() => {
     try {
       const saved = localStorage.getItem('aeterna_wedding_photos');
-      return saved ? JSON.parse(saved) : INITIAL_PHOTOS;
+      return saved
+        ? JSON.parse(saved)
+        : INITIAL_PHOTOS.map((photo) => ({ ...photo, moderationStatus: 'approved' as const }));
     } catch {
       return INITIAL_PHOTOS;
     }
