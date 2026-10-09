@@ -10,6 +10,7 @@ interface OrganizerDashboardProps {
   suggestedSongs?: SongSuggestion[];
   onUpdateDetails: (details: WeddingDetails) => void;
   onDeleteRsvp: (id: string) => void;
+  onUpdateRsvp: (rsvp: RsvpEntry) => void;
 }
 
 export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
@@ -20,6 +21,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
   suggestedSongs = [],
   onUpdateDetails,
   onDeleteRsvp,
+  onUpdateRsvp,
 }) => {
   const [activeTab, setActiveTab] = useState<'guests' | 'dietary' | 'playlist' | 'settings'>('guests');
   const [searchQuery, setSearchQuery] = useState('');
@@ -239,11 +241,15 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                           <span className="text-[11px] text-stone-500">{r.email}</span>
                         </td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium uppercase ${
-                            r.attending === 'accepted' ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-100 text-stone-600'
-                          }`}>
-                            {r.attending === 'accepted' ? 'Attending' : 'Declined'}
-                          </span>
+                          <select
+                            value={r.attending}
+                            onChange={(event) => onUpdateRsvp({ ...r, attending: event.target.value as RsvpEntry['attending'], partySize: event.target.value === 'declined' ? 0 : r.partySize })}
+                            className="rounded-lg border border-[#0F5132]/20 bg-white px-2 py-1 text-[10px] font-semibold uppercase text-[#0F5132]"
+                          >
+                            <option value="accepted">Attending</option>
+                            <option value="pending">Pending</option>
+                            <option value="declined">Declined</option>
+                          </select>
                         </td>
                         <td className="p-3 text-stone-700">
                           {r.partySize > 0 ? `${r.partySize} person` : '—'}
@@ -252,6 +258,15 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                           {r.dietaryRestrictions.join(', ') || 'None'}
                         </td>
                         <td className="p-3">
+                          <button
+                            onClick={() => {
+                              const adminNotes = window.prompt(`Private note for ${r.fullName}`, r.adminNotes || '');
+                              if (adminNotes !== null) onUpdateRsvp({ ...r, adminNotes });
+                            }}
+                            className="mr-3 text-[#0F5132] hover:text-[#C85A17] text-[11px] cursor-pointer"
+                          >
+                            Note
+                          </button>
                           <button
                             onClick={() => onDeleteRsvp(r.id)}
                             className="text-rose-600 hover:text-rose-800 text-[11px] cursor-pointer"

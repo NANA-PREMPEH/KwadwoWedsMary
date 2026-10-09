@@ -325,6 +325,12 @@ export default function App() {
 
   const handleDeleteRsvp = (id: string) => {
     setRsvps((prev) => prev.filter((r) => r.id !== id));
+    void weddingApi.deleteRsvp(id).catch(() => {});
+  };
+
+  const handleUpdateRsvp = (updatedRsvp: RsvpEntry) => {
+    setRsvps((prev) => prev.map((rsvp) => rsvp.id === updatedRsvp.id ? updatedRsvp : rsvp));
+    void weddingApi.updateRsvp(updatedRsvp).catch(() => {});
   };
 
   const handleUpdateDetails = (nextDetails: WeddingDetails) => {
@@ -541,6 +547,7 @@ export default function App() {
         suggestedSongs={songs}
         onUpdateDetails={handleUpdateDetails}
         onDeleteRsvp={handleDeleteRsvp}
+        onUpdateRsvp={handleUpdateRsvp}
       />
 
       <AdminLoginModal

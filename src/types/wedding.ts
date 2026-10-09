@@ -41,13 +41,14 @@ export interface RsvpEntry {
   fullName: string;
   email: string;
   phone?: string;
-  attending: 'accepted' | 'declined';
+  attending: 'accepted' | 'declined' | 'pending';
   partySize: number;
   guestNames?: string[];
   dietaryRestrictions: string[];
   dietaryNotes?: string;
   songRequest?: string;
   message?: string;
+  adminNotes?: string;
   submittedAt: string;
 }
 

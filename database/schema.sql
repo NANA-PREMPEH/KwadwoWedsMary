@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS rsvps (
 
 CREATE INDEX IF NOT EXISTS rsvps_email_index ON rsvps (LOWER(email));
 
+ALTER TABLE rsvps ADD COLUMN IF NOT EXISTS admin_notes TEXT;
+ALTER TABLE rsvps DROP CONSTRAINT IF EXISTS rsvps_attending_check;
+ALTER TABLE rsvps ADD CONSTRAINT rsvps_attending_check CHECK (attending IN ('accepted', 'declined', 'pending'));
+
 CREATE TABLE IF NOT EXISTS wedding_photos (
   id TEXT PRIMARY KEY,
   url TEXT NOT NULL,

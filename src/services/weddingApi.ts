@@ -19,6 +19,8 @@ export const weddingApi = {
     method: 'POST',
     body: JSON.stringify(rsvp),
   }),
+  updateRsvp: (rsvp: RsvpEntry) => request<RsvpEntry>('/rsvps', { method: 'PATCH', body: JSON.stringify(rsvp) }),
+  deleteRsvp: (id: string) => request<void>('/rsvps', { method: 'DELETE', body: JSON.stringify({ id }) }),
   getPhotos: () => request<WeddingPhoto[]>('/photos'),
   savePhoto: (photo: WeddingPhoto) => request<WeddingPhoto>('/photos', {
     method: 'POST',
