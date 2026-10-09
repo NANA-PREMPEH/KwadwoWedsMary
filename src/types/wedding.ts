@@ -65,6 +65,8 @@ export interface WeddingPhoto {
   likes: number;
   isLikedByUser?: boolean;
   filter?: PhotoFilter;
+  moderationStatus?: 'pending' | 'approved' | 'hidden';
+  isFeatured?: boolean;
 }
 
 export interface GuestbookEntry {
@@ -73,6 +75,14 @@ export interface GuestbookEntry {
   message: string;
   date: string;
   avatarSeed?: string;
+}
+
+export interface WeddingAnnouncement {
+  id: string;
+  title: string;
+  message: string;
+  startsAt: string;
+  endsAt: string;
 }
 
 export interface FaqItem {

@@ -14,7 +14,7 @@ import {
   INITIAL_SONG_SUGGESTIONS,
   INITIAL_SEATING_TABLES
 } from './data/initialData';
-import { WeddingDetails, RsvpEntry, WeddingPhoto, GuestbookEntry, SongSuggestion, SeatingTable } from './types/wedding';
+import { WeddingDetails, RsvpEntry, WeddingPhoto, GuestbookEntry, SongSuggestion, SeatingTable, WeddingAnnouncement } from './types/wedding';
 import { soundEngine } from './utils/audio';
 import { weddingApi } from './services/weddingApi';
 
@@ -124,6 +124,7 @@ export default function App() {
       return INITIAL_SEATING_TABLES;
     }
   });
+  const [announcements, setAnnouncements] = useState<WeddingAnnouncement[]>([]);
 
   // Track currently active user RSVP (unlocks seating chart if attending)
   const [currentUserRsvp, setCurrentUserRsvp] = useState<RsvpEntry | null>(() => {
@@ -219,6 +220,7 @@ export default function App() {
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
+  useEffect(() => { void weddingApi.getAnnouncements().then(({ content }) => content && setAnnouncements(content)).catch(() => {}); }, []);
 
   // Use PostgreSQL as the shared source of RSVP and photo data when the API is available.
   // Local browser storage remains a graceful fallback during development or if the API is offline.
@@ -235,12 +237,18 @@ export default function App() {
 
   useEffect(() => {
     void weddingApi.getWeddingDetails()
-      .then(({ details: databaseDetails }) => {
+      .then(({ content: databaseDetails }) => {
         if (databaseDetails) setDetails(databaseDetails);
       })
       .catch(() => {
         // The local wedding details remain available before the database is configured.
       });
+  }, []);
+
+  useEffect(() => {
+    void weddingApi.getSeatingTables().then(({ content }) => {
+      if (content) setTables(content);
+    }).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -333,6 +341,15 @@ export default function App() {
     void weddingApi.updateRsvp(updatedRsvp).catch(() => {});
   };
 
+  const handleUpdateTables = (nextTables: SeatingTable[]) => {
+    setTables(nextTables);
+    void weddingApi.saveSeatingTables(nextTables).catch(() => {});
+  };
+  const handleUpdateAnnouncements = (nextAnnouncements: WeddingAnnouncement[]) => {
+    setAnnouncements(nextAnnouncements);
+    void weddingApi.saveAnnouncements(nextAnnouncements).catch(() => {});
+  };
+
   const handleUpdateDetails = (nextDetails: WeddingDetails) => {
     setDetails(nextDetails);
     void weddingApi.saveWeddingDetails(nextDetails).catch(() => {
@@ -358,6 +375,11 @@ export default function App() {
     if (!authenticated) throw new Error('Incorrect email or password.');
     setIsAdminLoginOpen(false);
     setIsAdminOpen(true);
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminOpen(false);
+    void weddingApi.logoutAdmin().catch(() => {});
   };
 
   const handleAddPhoto = (newPhoto: WeddingPhoto) => {
@@ -414,6 +436,11 @@ export default function App() {
       return;
     }
     window.location.hash = `/${nextPage}`;
+  };
+
+  const handleUpdatePhoto = (updatedPhoto: WeddingPhoto) => {
+    setPhotos((prev) => prev.map((photo) => photo.id === updatedPhoto.id ? updatedPhoto : photo));
+    void weddingApi.savePhoto(updatedPhoto).catch(() => {});
   };
 
   const dismissRsvpReminder = () => {
@@ -474,6 +501,7 @@ export default function App() {
 
       {/* Main Wedding Content Flow */}
       <main className="flex-1" key={activeSection}>
+        {announcements.filter((item) => new Date(item.startsAt) <= new Date() && new Date(item.endsAt) >= new Date()).map((item) => <aside key={item.id} className="mx-auto mt-5 max-w-4xl rounded-xl border border-[#E7C56A]/50 bg-[#063b2b] px-5 py-3 text-center text-white shadow-lg"><strong className="font-serif text-lg text-[#E7C56A]">{item.title}</strong><p className="mt-0.5 text-sm text-white/85">{item.message}</p></aside>)}
         {activeSection === 'couple' && <HeroSection
           details={details}
           onOpenEnvelope={() => setIsEnvelopeOpen(true)}
@@ -548,6 +576,13 @@ export default function App() {
         onUpdateDetails={handleUpdateDetails}
         onDeleteRsvp={handleDeleteRsvp}
         onUpdateRsvp={handleUpdateRsvp}
+        photos={photos}
+        onUpdatePhoto={handleUpdatePhoto}
+        tables={tables}
+        onUpdateTables={handleUpdateTables}
+        announcements={announcements}
+        onUpdateAnnouncements={handleUpdateAnnouncements}
+        onLogout={handleAdminLogout}
       />
 
       <AdminLoginModal

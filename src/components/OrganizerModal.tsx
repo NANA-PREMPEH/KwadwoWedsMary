@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { RsvpEntry, WeddingDetails, SongSuggestion } from '../types/wedding';
-import { X, Users, CheckCircle, XCircle, Utensils, Music, Download, Search, Settings, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { RsvpEntry, SeatingTable, WeddingAnnouncement, WeddingDetails, SongSuggestion, WeddingPhoto } from '../types/wedding';
+import { X, Users, CheckCircle, XCircle, Utensils, Music, Download, Search, Settings, ShieldCheck, HeartHandshake, LogOut } from 'lucide-react';
 
 interface OrganizerDashboardProps {
   isOpen: boolean;
@@ -11,6 +11,13 @@ interface OrganizerDashboardProps {
   onUpdateDetails: (details: WeddingDetails) => void;
   onDeleteRsvp: (id: string) => void;
   onUpdateRsvp: (rsvp: RsvpEntry) => void;
+  photos: WeddingPhoto[];
+  onUpdatePhoto: (photo: WeddingPhoto) => void;
+  tables: SeatingTable[];
+  onUpdateTables: (tables: SeatingTable[]) => void;
+  announcements: WeddingAnnouncement[];
+  onUpdateAnnouncements: (announcements: WeddingAnnouncement[]) => void;
+  onLogout: () => void;
 }
 
 export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
@@ -22,8 +29,17 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
   onUpdateDetails,
   onDeleteRsvp,
   onUpdateRsvp,
+  photos,
+  onUpdatePhoto,
+  tables,
+  onUpdateTables,
+  announcements,
+  onUpdateAnnouncements,
+  onLogout,
 }) => {
-  const [activeTab, setActiveTab] = useState<'guests' | 'dietary' | 'playlist' | 'settings'>('guests');
+  const [activeTab, setActiveTab] = useState<'guests' | 'dietary' | 'playlist' | 'photos' | 'seating' | 'announcements' | 'settings'>('guests');
+  const [announcementTitle, setAnnouncementTitle] = useState('');
+  const [announcementMessage, setAnnouncementMessage] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [editingNames, setEditingNames] = useState(details.coupleNames);
   const [editingDate, setEditingDate] = useState(details.date);
@@ -80,6 +96,20 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
     document.body.removeChild(link);
   };
 
+  const downloadCsv = (filename: string, headers: string[], rows: string[][]) => {
+    const quote = (value: string) => `"${value.replace(/"/g, '""')}"`;
+    const blob = new Blob([[headers, ...rows].map((row) => row.map(quote).join(',')).join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  };
+
+  const exportContacts = () => downloadCsv('wedding-guest-contacts.csv', ['Name', 'Email', 'Phone', 'Attendance', 'Party Size'], rsvps.map((rsvp) => [rsvp.fullName, rsvp.email, rsvp.phone || '', rsvp.attending, String(rsvp.partySize)]));
+  const exportMeals = () => downloadCsv('wedding-catering-preferences.csv', ['Guest', 'Party Size', 'Meal Preferences', 'Notes'], attendingList.map((rsvp) => [rsvp.fullName, String(rsvp.partySize), rsvp.dietaryRestrictions.join('; '), rsvp.dietaryNotes || '']));
+  const exportSeating = () => downloadCsv('wedding-seating-plan.csv', ['Table', 'Table Name', 'Guest', 'Role'], tables.flatMap((table) => table.guests.map((guest) => [String(table.tableNumber), table.name, guest.name, guest.role || 'Guest'])));
+
   const handleSaveSettings = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateDetails({
@@ -105,6 +135,14 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
     r.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
     r.email.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  const assignGuest = (rsvp: RsvpEntry, tableId: string) => {
+    onUpdateTables(tables.map((table) => ({
+      ...table,
+      guests: table.id === tableId
+        ? [...table.guests.filter((guest) => guest.rsvpId !== rsvp.id), { name: rsvp.fullName, role: 'Honored Guest', rsvpId: rsvp.id }]
+        : table.guests.filter((guest) => guest.rsvpId !== rsvp.id),
+    })));
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl animate-fade-in">
@@ -126,12 +164,19 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-2 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-200/50 cursor-pointer"
-          >
-            <X className="w-5 h-5" />
+          <div className="flex items-center gap-1">
+            <button onClick={onLogout} className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-[#C85A17] hover:bg-[#C85A17]/10" title="Sign out of the admin portal">
+              <LogOut className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Logout</span>
+            </button>
+            <button onClick={onClose} className="p-2 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-200/50 cursor-pointer" aria-label="Close admin portal">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <button onClick={() => setActiveTab('photos')} className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'photos' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500'}`}>
+            Photos ({photos.filter((photo) => photo.moderationStatus === 'pending').length} pending)
           </button>
+          <button onClick={() => setActiveTab('seating')} className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'seating' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500'}`}>Seating</button>
+          <button onClick={() => setActiveTab('announcements')} className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'announcements' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500'}`}>Announcements</button>
         </div>
 
         {/* Quick KPI stats row */}
@@ -312,6 +357,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                     </li>
                   ))}
                 </ul>
+                <button onClick={exportMeals} className="mt-4 rounded-lg bg-[#0F5132] px-3 py-2 text-xs font-semibold uppercase tracking-wider text-white">Export catering CSV</button>
               </div>
             </div>
           )}
@@ -355,6 +401,54 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                   )}
                 </div>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'photos' && (
+            <div className="space-y-3">
+              <p className="text-xs text-stone-600">Approve a guest photo before it appears in the public gallery, hide it, or feature it for the slideshow.</p>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {photos.map((photo) => (
+                  <div key={photo.id} className="flex gap-3 rounded-xl border border-[#ebdcc9] bg-white p-3">
+                    <img src={photo.url} alt="Guest submission" className="h-16 w-16 rounded-lg object-cover" />
+                    <div className="min-w-0 flex-1"><p className="truncate text-xs font-semibold text-[#0F5132]">{photo.uploaderName}</p><p className="mt-1 line-clamp-2 text-[11px] text-stone-500">{photo.caption}</p>
+                      <div className="mt-2 flex flex-wrap gap-1.5 text-[10px]">
+                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'approved' })} className="rounded bg-emerald-100 px-2 py-1 text-emerald-800">Approve</button>
+                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'hidden' })} className="rounded bg-stone-100 px-2 py-1 text-stone-700">Hide</button>
+                        <button onClick={() => onUpdatePhoto({ ...photo, isFeatured: !photo.isFeatured })} className="rounded bg-amber-100 px-2 py-1 text-amber-800">{photo.isFeatured ? 'Unfeature' : 'Feature'}</button>
+                      </div></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'seating' && (
+            <div className="space-y-5">
+              <div className="flex items-center justify-between gap-3"><p className="text-xs text-stone-600">Assign confirmed guests to a table. Capacity warnings appear in orange.</p><button onClick={exportSeating} className="rounded-lg bg-[#0F5132] px-3 py-2 text-xs font-semibold uppercase tracking-wider text-white">Export seating CSV</button></div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {tables.map((table) => {
+                  const full = table.guests.length >= table.capacity;
+                  return <div key={table.id} className={`rounded-xl border p-4 ${full ? 'border-[#C85A17]/60 bg-orange-50' : 'border-[#0F5132]/20 bg-white'}`}>
+                    <div className="flex justify-between gap-3"><div><h4 className="font-serif text-lg text-[#0F5132]">Table {table.tableNumber}</h4><p className="text-[11px] text-stone-500">{table.name}</p></div><span className="text-xs font-bold text-[#C85A17]">{table.guests.length}/{table.capacity}</span></div>
+                    <select defaultValue="" onChange={(event) => { const rsvp = rsvps.find((item) => item.id === event.target.value); if (rsvp) assignGuest(rsvp, table.id); event.currentTarget.value = ''; }} className="mt-3 w-full rounded-lg border border-stone-200 p-2 text-xs">
+                      <option value="">Assign confirmed guest…</option>{rsvps.filter((rsvp) => rsvp.attending === 'accepted').map((rsvp) => <option key={rsvp.id} value={rsvp.id}>{rsvp.fullName}</option>)}
+                    </select>
+                    <div className="mt-3 space-y-1.5">{table.guests.map((guest) => <div key={`${guest.rsvpId}-${guest.name}`} className="flex justify-between rounded bg-stone-50 px-2 py-1.5 text-xs"><span>{guest.name}</span><button onClick={() => onUpdateTables(tables.map((item) => item.id === table.id ? { ...item, guests: item.guests.filter((entry) => entry !== guest) } : item))} className="text-rose-600">Remove</button></div>)}</div>
+                  </div>;
+                })}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'announcements' && (
+            <div className="space-y-4 max-w-xl"><p className="text-xs text-stone-600">Publish a timely message for guests. It appears only between the selected start and end times.</p>
+              <form onSubmit={(event) => { event.preventDefault(); const now = new Date(); onUpdateAnnouncements([{ id: `announcement-${Date.now()}`, title: announcementTitle || 'Wedding Update', message: announcementMessage, startsAt: now.toISOString(), endsAt: new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString() }, ...announcements]); setAnnouncementTitle(''); setAnnouncementMessage(''); }} className="space-y-3 rounded-xl border border-[#ebdcc9] bg-white p-4">
+                <input value={announcementTitle} onChange={(event) => setAnnouncementTitle(event.target.value)} placeholder="Announcement title" required className="w-full rounded-lg border border-stone-200 p-2 text-sm" />
+                <textarea value={announcementMessage} onChange={(event) => setAnnouncementMessage(event.target.value)} placeholder="Message for guests" required rows={3} className="w-full rounded-lg border border-stone-200 p-2 text-sm" />
+                <button className="rounded-lg bg-[#0F5132] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white">Publish for 24 hours</button>
+              </form>
+              {announcements.map((item) => <div key={item.id} className="flex justify-between gap-3 rounded-xl border border-[#ebdcc9] bg-white p-3"><div><p className="font-semibold text-[#0F5132]">{item.title}</p><p className="text-xs text-stone-600">{item.message}</p></div><button onClick={() => onUpdateAnnouncements(announcements.filter((entry) => entry.id !== item.id))} className="text-xs text-rose-600">Remove</button></div>)}
             </div>
           )}
 
@@ -422,6 +516,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                   Save Changes
                 </button>
               </form>
+              <button onClick={exportContacts} className="rounded-lg border border-[#0F5132]/30 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-[#0F5132]">Export guest contacts CSV</button>
             </div>
           )}
         </div>

@@ -11,6 +11,8 @@ const toPhoto = (row) => ({
   category: row.category,
   filter: row.photo_filter,
   likes: row.likes,
+  moderationStatus: row.moderation_status,
+  isFeatured: row.is_featured,
   timestamp: new Date(row.created_at).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' }),
 });
 
@@ -32,12 +34,12 @@ export default async function handler(req, res) {
     }
 
     const { rows } = await pool.query(
-      `INSERT INTO wedding_photos (id, url, caption, uploader_name, category, photo_filter, likes)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)
-       ON CONFLICT (id) DO NOTHING
+      `INSERT INTO wedding_photos (id, url, caption, uploader_name, category, photo_filter, likes, moderation_status, is_featured)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       ON CONFLICT (id) DO UPDATE SET moderation_status = EXCLUDED.moderation_status, is_featured = EXCLUDED.is_featured
        RETURNING *`,
       [photo.id, photo.url, photo.caption || '', photo.uploaderName.trim(), photo.category,
-        isPhotoFilter(photo.filter) ? photo.filter : 'none', Math.max(0, Number(photo.likes) || 0)]
+        isPhotoFilter(photo.filter) ? photo.filter : 'none', Math.max(0, Number(photo.likes) || 0), photo.moderationStatus || 'pending', Boolean(photo.isFeatured)]
     );
     return res.status(201).json(rows[0] ? toPhoto(rows[0]) : photo);
   } catch (error) {

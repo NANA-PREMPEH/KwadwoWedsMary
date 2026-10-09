@@ -68,9 +68,10 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
 
   // Filter photos
+  const approvedPhotos = photos.filter((photo) => photo.moderationStatus !== 'pending' && photo.moderationStatus !== 'hidden');
   const filteredPhotos = selectedCategory === 'all'
-    ? photos
-    : photos.filter((p) => p.category === selectedCategory);
+    ? approvedPhotos
+    : approvedPhotos.filter((p) => p.category === selectedCategory);
 
   const getPhotoFilterStyle = (filter: PhotoFilter = 'none') => ({
     filter: PHOTO_FILTERS.find((option) => option.value === filter)?.cssFilter ?? 'none'
@@ -173,7 +174,8 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
       timestamp: 'Just now',
       likes: 1,
       isLikedByUser: true,
-      filter: photoFilter
+      filter: photoFilter,
+      moderationStatus: 'pending'
     };
 
     onAddPhoto(newPhoto);
@@ -197,7 +199,8 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
       category: pick.category,
       timestamp: 'Just now',
       likes: Math.floor(Math.random() * 8) + 1,
-      isLikedByUser: false
+      isLikedByUser: false,
+      moderationStatus: 'approved'
     };
     onAddPhoto(simPhoto);
     soundEngine.playNote(587.33, 0.5, 0.2, 'sine');

@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS wedding_photos (
 );
 
 CREATE INDEX IF NOT EXISTS wedding_photos_created_at_index ON wedding_photos (created_at DESC);
+ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS moderation_status TEXT NOT NULL DEFAULT 'pending';
+ALTER TABLE wedding_photos ADD COLUMN IF NOT EXISTS is_featured BOOLEAN NOT NULL DEFAULT FALSE;
 
 CREATE TABLE IF NOT EXISTS site_content (
   content_key TEXT PRIMARY KEY,

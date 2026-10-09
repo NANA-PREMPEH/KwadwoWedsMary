@@ -23,35 +23,35 @@ Use this document to decide and track the next admin-portal improvements for Kwa
 
 ## Priority 3 — Seating Plan Manager
 
-- [ ] Display tables with seat capacity and assigned guests.
-- [ ] Search and assign confirmed guests to tables.
-- [ ] Move guests between tables.
-- [ ] Warn when a table reaches capacity.
-- [ ] Print or export table assignments.
-- [ ] Save seating changes to PostgreSQL.
+- [x] Display tables with seat capacity and assigned guests.
+- [-] Assign confirmed guests to tables. *(Assignment is implemented; a dedicated guest-search field is still pending.)*
+- [x] Move guests between tables.
+- [x] Warn when a table reaches capacity.
+- [x] Export table assignments as CSV.
+- [x] Save seating changes to PostgreSQL.
 
 ## Priority 4 — Photo Moderation
 
-- [ ] View every guest photo submission in an admin queue.
-- [ ] Approve photos before they appear in the public gallery.
-- [ ] Feature selected photos in the gallery or slideshow.
-- [ ] Hide or delete unsuitable submissions.
-- [ ] Record moderation status and timestamps in PostgreSQL.
+- [x] View every guest photo submission in an admin queue.
+- [x] Approve photos before they appear in the public gallery.
+- [x] Feature selected photos in the gallery or slideshow.
+- [x] Hide unsuitable submissions.
+- [-] Record moderation status in PostgreSQL. *(A separate moderation timestamp is still pending.)*
 
 ## Priority 5 — Announcements
 
-- [ ] Create wedding-day announcements.
-- [ ] Select a start and end time for each announcement.
-- [ ] Display active announcements prominently to guests.
-- [ ] Manage announcement history in the admin portal.
-- [ ] Persist announcements in PostgreSQL.
+- [x] Create wedding-day announcements.
+- [-] Set an announcement time window. *(Announcements currently publish immediately for 24 hours; custom start/end inputs are still pending.)*
+- [x] Display active announcements prominently to guests.
+- [x] Manage announcement history in the admin portal.
+- [x] Persist announcements in PostgreSQL.
 
 ## Priority 6 — Exports and Coordination
 
 - [x] Export RSVPs as CSV.
-- [ ] Export meal preferences for caterers.
-- [ ] Export guest contacts for coordinators.
-- [ ] Export seating assignments.
+- [x] Export meal preferences for caterers.
+- [x] Export guest contacts for coordinators.
+- [x] Export seating assignments.
 - [ ] Add an optional printable summary report.
 
 ## Implementation Order
