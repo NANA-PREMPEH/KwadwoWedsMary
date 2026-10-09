@@ -1,0 +1,6 @@
+{
+  "name": "Aeterna — Interactive Wedding Invitation & Live Gallery",
+  "description": "An elegant interactive wedding invitation featuring envelope wax seal reveal, RSVP registration, venue guide, schedule, and a live guest photo sharing stream.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
