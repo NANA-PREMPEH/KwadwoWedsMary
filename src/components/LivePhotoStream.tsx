@@ -68,8 +68,8 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
   const thumbnailStripRef = useRef<HTMLDivElement>(null);
 
   // Filter photos
-  // Public gallery is strict: a photo must be explicitly approved by an admin.
-  const approvedPhotos = photos.filter((photo) => photo.moderationStatus === 'approved');
+  // Guest photos appear immediately; the administrator can remove unsuitable submissions.
+  const approvedPhotos = photos.filter((photo) => photo.moderationStatus !== 'hidden');
   const filteredPhotos = selectedCategory === 'all'
     ? approvedPhotos
     : approvedPhotos.filter((p) => p.category === selectedCategory);
@@ -176,7 +176,7 @@ export const LivePhotoStream: React.FC<LivePhotoStreamProps> = ({
       likes: 1,
       isLikedByUser: true,
       filter: photoFilter,
-      moderationStatus: 'pending'
+      moderationStatus: 'approved'
     };
 
     onAddPhoto(newPhoto);
