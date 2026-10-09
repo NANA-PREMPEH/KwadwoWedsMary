@@ -25,6 +25,8 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [editingNames, setEditingNames] = useState(details.coupleNames);
   const [editingDate, setEditingDate] = useState(details.date);
+  const [editingVenueName, setEditingVenueName] = useState(details.ceremonyVenue.name);
+  const [editingVenueAddress, setEditingVenueAddress] = useState(details.ceremonyVenue.address);
   const [saveNotice, setSaveNotice] = useState(false);
 
   if (!isOpen) return null;
@@ -82,6 +84,16 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
       ...details,
       coupleNames: editingNames,
       date: editingDate,
+      ceremonyVenue: {
+        ...details.ceremonyVenue,
+        name: editingVenueName,
+        address: editingVenueAddress,
+      },
+      receptionVenue: {
+        ...details.receptionVenue,
+        name: editingVenueName,
+        address: editingVenueAddress,
+      },
     });
     setSaveNotice(true);
     setTimeout(() => setSaveNotice(false), 2500);
@@ -348,6 +360,30 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                     type="text"
                     value={editingNames}
                     onChange={(e) => setEditingNames(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-[#dcd0bf] focus:outline-none text-xs text-[#2b241e] bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-[#5c4e42] mb-1 font-sans">
+                    Venue Name
+                  </label>
+                  <input
+                    type="text"
+                    value={editingVenueName}
+                    onChange={(e) => setEditingVenueName(e.target.value)}
+                    className="w-full px-3 py-2 rounded-lg border border-[#dcd0bf] focus:outline-none text-xs text-[#2b241e] bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs uppercase tracking-wider font-semibold text-[#5c4e42] mb-1 font-sans">
+                    Venue Address
+                  </label>
+                  <input
+                    type="text"
+                    value={editingVenueAddress}
+                    onChange={(e) => setEditingVenueAddress(e.target.value)}
                     className="w-full px-3 py-2 rounded-lg border border-[#dcd0bf] focus:outline-none text-xs text-[#2b241e] bg-white"
                   />
                 </div>

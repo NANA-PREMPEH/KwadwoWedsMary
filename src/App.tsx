@@ -33,6 +33,7 @@ import { FaqRegistrySection } from './components/FaqRegistrySection';
 import { OrganizerModal } from './components/OrganizerModal';
 import { Footer } from './components/Footer';
 import { CookieConsent } from './components/CookieConsent';
+import { AdminLoginModal } from './components/AdminLoginModal';
 import { BellRing, X } from 'lucide-react';
 
 const PAGE_IDS = ['couple', 'schedule', 'venue', 'dress-code', 'rsvp', 'seating-chart', 'music-player', 'photos', 'guestbook', 'faq'] as const;
@@ -137,6 +138,7 @@ export default function App() {
   // UI state
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [activeSection, setActiveSection] = useState(getPageFromHash);
 
@@ -232,6 +234,16 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    void weddingApi.getWeddingDetails()
+      .then(({ details: databaseDetails }) => {
+        if (databaseDetails) setDetails(databaseDetails);
+      })
+      .catch(() => {
+        // The local wedding details remain available before the database is configured.
+      });
+  }, []);
+
+  useEffect(() => {
     if (hasSubmittedRsvp) return;
 
     try {
@@ -315,6 +327,33 @@ export default function App() {
     setRsvps((prev) => prev.filter((r) => r.id !== id));
   };
 
+  const handleUpdateDetails = (nextDetails: WeddingDetails) => {
+    setDetails(nextDetails);
+    void weddingApi.saveWeddingDetails(nextDetails).catch(() => {
+      // The organizer still retains the change locally if the database is unavailable.
+    });
+  };
+
+  const openAdminPortal = async () => {
+    try {
+      const { authenticated } = await weddingApi.getAdminSession();
+      if (authenticated) {
+        setIsAdminOpen(true);
+        return;
+      }
+    } catch {
+      // Show the sign-in view when the session endpoint is not yet available locally.
+    }
+    setIsAdminLoginOpen(true);
+  };
+
+  const handleAdminLogin = async (email: string, password: string) => {
+    const { authenticated } = await weddingApi.loginAdmin(email, password);
+    if (!authenticated) throw new Error('Incorrect email or password.');
+    setIsAdminLoginOpen(false);
+    setIsAdminOpen(true);
+  };
+
   const handleAddPhoto = (newPhoto: WeddingPhoto) => {
     setPhotos((prev) => [newPhoto, ...prev]);
     void weddingApi.savePhoto(newPhoto).catch(() => {
@@ -384,7 +423,7 @@ export default function App() {
       {/* Top Navigation */}
       <Navbar
         onOpenEnvelope={() => setIsEnvelopeOpen(true)}
-        onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenAdmin={openAdminPortal}
         isAudioPlaying={isAudioPlaying}
         onToggleAudio={handleToggleAudio}
         activeSection={activeSection}
@@ -500,8 +539,14 @@ export default function App() {
         rsvps={rsvps}
         details={details}
         suggestedSongs={songs}
-        onUpdateDetails={setDetails}
+        onUpdateDetails={handleUpdateDetails}
         onDeleteRsvp={handleDeleteRsvp}
+      />
+
+      <AdminLoginModal
+        isOpen={isAdminLoginOpen}
+        onClose={() => setIsAdminLoginOpen(false)}
+        onLogin={handleAdminLogin}
       />
 
       <CookieConsent />

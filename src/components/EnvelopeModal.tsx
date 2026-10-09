@@ -137,58 +137,58 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
 
           {/* Unfolded Inside Invitation Card (slides out smoothly when unsealed) */}
           <div
-            className={`absolute inset-x-5 inset-y-5 bg-white border-2 border-[#0F5132]/60 rounded-2xl shadow-xl p-4 sm:p-5 flex flex-col items-center text-center transition-all duration-1000 ease-out z-20 ${
+            className={`absolute inset-x-5 inset-y-5 bg-white border-2 border-[#0F5132]/60 rounded-2xl shadow-xl p-3 sm:p-5 flex flex-col items-center text-center transition-all duration-1000 ease-out z-20 ${
               isBroken
-                ? 'scale-100 translate-y-0 opacity-100 ring-1 ring-[#C85A17]/30'
-                : 'scale-95 translate-y-8 opacity-0 pointer-events-none'
+                ? 'scale-[0.92] sm:scale-100 translate-y-0 opacity-100 ring-1 ring-[#C85A17]/30'
+                : 'scale-[0.88] sm:scale-95 translate-y-8 opacity-0 pointer-events-none'
             }`}
           >
             {/* Card Header Fleuron */}
-            <div className="w-full flex items-center justify-center space-x-1.5 text-[#C85A17] text-[9px] sm:text-[10px] tracking-[0.22em] uppercase font-semibold font-sans shrink-0">
+            <div className="w-full flex items-center justify-center space-x-1 text-[#C85A17] text-[8px] sm:text-[10px] tracking-[0.18em] sm:tracking-[0.22em] uppercase font-semibold font-sans shrink-0">
               <span>✦</span>
               <span>The Honour of Your Presence</span>
               <span>✦</span>
             </div>
 
             {/* Couple names & invitation copy */}
-            <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center py-1.5 sm:py-2">
-              <div className="font-script text-[clamp(1.25rem,3.6vw,2.35rem)] text-[#0F5132] leading-[1.05]">
+            <div className="w-full shrink-0 flex flex-col items-center justify-center py-1 sm:flex-1 sm:min-h-0 sm:py-2">
+              <div className="font-script text-[clamp(1rem,3.6vw,2.35rem)] text-[#0F5132] leading-[1.02] sm:leading-[1.05]">
                 <span className="block whitespace-nowrap">{partnerOne}</span>
                 <span className="block text-[#C85A17] text-[0.72em] leading-none my-0.5">&amp;</span>
                 <span className="block whitespace-nowrap">{partnerTwo}</span>
               </div>
-              <div className="w-12 h-px bg-[#C85A17] mx-auto my-2" />
-              <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[#C85A17] font-semibold font-sans">
+              <div className="w-10 sm:w-12 h-px bg-[#C85A17] mx-auto my-1 sm:my-2" />
+              <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.16em] sm:tracking-[0.2em] text-[#C85A17] font-semibold font-sans">
                 Request the pleasure of your company
               </p>
-              <p className="text-[11px] sm:text-xs font-serif italic text-stone-600 mt-1">
+              <p className="text-[10px] sm:text-xs font-serif italic text-stone-600 mt-0.5 sm:mt-1">
                 as they exchange their vows and unite in marriage
               </p>
             </div>
 
             {/* Wedding Date & Venue */}
-            <div className="w-full shrink-0 border-t border-[#0F5132]/20 pt-2 text-center">
-              <p className="font-serif text-sm sm:text-base font-semibold text-[#0F5132] tracking-wide">
+            <div className="w-full shrink-0 border-t border-[#0F5132]/20 pt-1.5 sm:pt-2 text-center">
+              <p className="font-serif text-xs sm:text-base font-semibold text-[#0F5132] tracking-wide leading-tight">
                 {weddingDate}
               </p>
-              <p className="text-[10px] sm:text-xs text-[#C85A17] font-sans mt-0.5 tracking-wide font-medium">
+              <p className="text-[9px] sm:text-xs text-[#C85A17] font-sans mt-0.5 tracking-wide font-medium leading-tight">
                 {venueName} · Accra, Ghana
               </p>
             </div>
 
             {/* Action buttons upon full reveal */}
             {isFullyRevealed && (
-              <div className="mt-2 w-full flex flex-col sm:flex-row items-center gap-2 animate-fade-in shrink-0">
+              <div className="mt-1.5 sm:mt-2 w-full flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2 animate-fade-in shrink-0">
                 <button
                   onClick={handleExplore}
-                  className="w-full py-2 px-4 bg-[#0F5132] hover:bg-[#082E1D] text-white text-xs uppercase tracking-[0.2em] font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg group cursor-pointer border border-[#C85A17]/40"
+                  className="w-full py-1.5 sm:py-2 px-4 bg-[#0F5132] hover:bg-[#082E1D] text-white text-[10px] sm:text-xs uppercase tracking-[0.18em] sm:tracking-[0.2em] font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg group cursor-pointer border border-[#C85A17]/40"
                 >
                   <span>Enter Celebration Suite</span>
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 text-[#E06D28]" />
                 </button>
                 <button
                   onClick={handleResetSeal}
-                  className="py-2 px-3 bg-[#FAF5EE] hover:bg-stone-200 text-[#0F5132] text-xs uppercase tracking-wider font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-[#DFD4C2] cursor-pointer"
+                  className="py-1.5 sm:py-2 px-3 bg-[#FAF5EE] hover:bg-stone-200 text-[#0F5132] text-xs uppercase tracking-wider font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5 border border-[#DFD4C2] cursor-pointer"
                   title="Seal envelope again"
                 >
                   <RotateCcw className="w-3.5 h-3.5 text-[#C85A17]" />

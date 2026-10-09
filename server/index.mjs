@@ -2,12 +2,22 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { pool } from './db.mjs';
+import loginHandler from '../api/auth/login.mjs';
+import sessionHandler from '../api/auth/session.mjs';
+import logoutHandler from '../api/auth/logout.mjs';
+import contentHandler from '../api/content.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = Number(process.env.PORT || 4000);
 
 app.use(express.json({ limit: '8mb' }));
+
+// These same handlers are deployed as Vercel Functions. Register them here for local development.
+app.all('/api/auth/login', loginHandler);
+app.all('/api/auth/session', sessionHandler);
+app.all('/api/auth/logout', logoutHandler);
+app.all('/api/content', contentHandler);
 
 const asArray = (value) => Array.isArray(value) ? value : [];
 const isPhotoCategory = (value) => ['ceremony', 'cocktail', 'dinner', 'party', 'candid'].includes(value);

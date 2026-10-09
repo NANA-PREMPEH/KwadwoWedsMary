@@ -15,9 +15,10 @@ The root `api/` directory contains Vercel Functions for the RSVP, photo, and hea
 
 1. Import this GitHub repository into Vercel.
 2. In the Vercel Marketplace, install a managed PostgreSQL provider such as [Neon](https://vercel.com/marketplace/neon). Vercel Postgres is no longer offered for new projects; Marketplace providers supply the database credentials instead.
-3. In **Settings → Environment Variables**, set `DATABASE_URL` to the provider connection string and `DATABASE_SSL` to `true` for Neon/managed PostgreSQL.
-4. Apply [database/schema.sql](database/schema.sql) in the provider's SQL editor once, before accepting RSVP submissions.
-5. Deploy. Vercel uses `vercel.json` to install with npm, build the Vite site, and deploy the API functions.
+3. When using the Neon Vercel integration, `POSTGRES_URL` is injected automatically. For another provider, set `DATABASE_URL` to the provider connection string. Set `DATABASE_SSL` to `true` for managed PostgreSQL.
+4. Add `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and a long random `ADMIN_SESSION_SECRET` in the same environment-variable screen. These are required to access the protected admin portal.
+5. Apply [database/schema.sql](database/schema.sql) in the provider's SQL editor once, before accepting RSVP submissions.
+6. Deploy. Vercel uses `vercel.json` to install with npm, build the Vite site, and deploy the API functions.
 
 After deployment, verify `<your-domain>/api/health` returns `{ "ok": true }`.
 

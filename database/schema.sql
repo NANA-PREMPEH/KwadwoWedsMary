@@ -27,3 +27,9 @@ CREATE TABLE IF NOT EXISTS wedding_photos (
 );
 
 CREATE INDEX IF NOT EXISTS wedding_photos_created_at_index ON wedding_photos (created_at DESC);
+
+CREATE TABLE IF NOT EXISTS site_content (
+  content_key TEXT PRIMARY KEY,
+  content_value JSONB NOT NULL,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

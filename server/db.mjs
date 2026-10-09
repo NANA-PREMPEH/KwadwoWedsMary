@@ -6,10 +6,11 @@ import path from 'node:path';
 
 const { Pool } = pg;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const databaseUrl = process.env.DATABASE_URL;
+// Neon/Vercel injects POSTGRES_URL automatically. DATABASE_URL remains supported for other providers.
+const databaseUrl = process.env.DATABASE_URL || process.env.POSTGRES_URL;
 
 if (!databaseUrl) {
-  throw new Error('DATABASE_URL is required. Add it to .env before starting the API.');
+  throw new Error('DATABASE_URL or POSTGRES_URL is required. Add it to .env before starting the API.');
 }
 
 export const pool = new Pool({

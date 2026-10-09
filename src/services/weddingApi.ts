@@ -1,4 +1,4 @@
-import { RsvpEntry, WeddingPhoto } from '../types/wedding';
+import { RsvpEntry, WeddingDetails, WeddingPhoto } from '../types/wedding';
 
 const request = async <T>(path: string, options?: RequestInit): Promise<T> => {
   const response = await fetch(`/api${path}`, {
@@ -24,4 +24,15 @@ export const weddingApi = {
     method: 'POST',
     body: JSON.stringify(photo),
   }),
+  getWeddingDetails: () => request<{ details: WeddingDetails | null }>('/content'),
+  saveWeddingDetails: (details: WeddingDetails) => request<{ details: WeddingDetails }>('/content', {
+    method: 'PUT',
+    body: JSON.stringify({ details }),
+  }),
+  getAdminSession: () => request<{ authenticated: boolean }>('/auth/session'),
+  loginAdmin: (email: string, password: string) => request<{ authenticated: boolean }>('/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  }),
+  logoutAdmin: () => request<{ authenticated: boolean }>('/auth/logout', { method: 'POST' }),
 };
