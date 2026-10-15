@@ -307,7 +307,7 @@ export const InteractiveVenueMap: React.FC = () => {
           <div
             ref={mapContainerRef}
             className="w-full flex-1 min-h-[480px] z-10 pointer-events-none select-none"
-            aria-label="Static regional map of Lake Como wedding sites"
+            aria-label="Street map showing Idyllic Moments Guest House in Haatso, Accra"
           />
 
           {/* Static Map Header Banner */}

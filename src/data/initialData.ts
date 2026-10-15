@@ -32,7 +32,7 @@ export const INITIAL_WEDDING_DETAILS: WeddingDetails = {
       { name: 'Deep Forest Emerald', hex: '#1B3B2F' }
     ]
   },
-  hashtag: '#KwadwoAndMary2026'
+  hashtag: '#KMLovestory2026'
 };
 
 export const INITIAL_SCHEDULE: ScheduleItem[] = [
