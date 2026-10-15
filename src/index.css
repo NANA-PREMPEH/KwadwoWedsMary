@@ -204,6 +204,44 @@ html.dark .glass-strong [class*="text-stone-"] {
   color: #edf5ef !important;
 }
 
+/* Keep light-theme ink colors readable wherever they appear on dark pages. */
+html.dark [class*="text-[#1F2421]"],
+html.dark [class*="text-[#082E1D]"],
+html.dark [class*="text-[#0F5132]"],
+html.dark [class*="text-[#2b241e]"],
+html.dark [class*="text-[#2c241d]"],
+html.dark [class*="text-[#2c2724]"],
+html.dark [class*="text-[#3D322A]"],
+html.dark [class*="text-[#3d332a]"],
+html.dark [class*="text-[#423a32]"],
+html.dark [class*="text-[#4d4034]"],
+html.dark [class*="text-[#4d4035]"],
+html.dark [class*="text-[#524438]"],
+html.dark [class*="text-[#55473a]"],
+html.dark [class*="text-[#5c4a3b]"],
+html.dark [class*="text-[#5c4e42]"],
+html.dark [class*="text-[#5c5249]"],
+html.dark [class*="text-[#5e5146]"],
+html.dark [class*="text-[#6b5847]"] {
+  color: #f3eee4 !important;
+}
+
+html.dark [class*="text-stone-400"],
+html.dark [class*="text-stone-500"],
+html.dark [class*="text-stone-600"],
+html.dark [class*="text-stone-700"],
+html.dark [class*="text-stone-800"],
+html.dark [class*="text-stone-900"] {
+  color: #d7ddd8 !important;
+}
+
+html.dark .emerald-gradient-text {
+  background: linear-gradient(135deg, #f7f0e3 0%, #b8dec9 55%, #e7ad4a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 html.dark header {
   background-color: rgba(4, 27, 19, 0.9) !important;
   border-color: rgba(213, 176, 92, 0.28) !important;
@@ -247,6 +285,19 @@ html.dark .bg-white\/80,
 html.dark .bg-white\/95,
 html.dark .bg-\[\#FDFBF7\] {
   background-color: rgba(8, 49, 34, 0.94) !important;
+}
+
+html.dark [class*="bg-[#eef3f1]"],
+html.dark [class*="bg-[#f4eee4]"],
+html.dark [class*="bg-[#f5efe6]"],
+html.dark [class*="bg-[#F2E8DB]"],
+html.dark [class*="bg-[#F4EDE2]"],
+html.dark [class*="bg-[#F6EFE4]"],
+html.dark [class*="bg-[#FAF5EE]"],
+html.dark [class*="bg-[#F7FAF8]"],
+html.dark [class*="bg-stone-50"],
+html.dark [class*="bg-stone-100"] {
+  background-color: rgba(12, 57, 41, 0.94) !important;
 }
 
 /* Editorial finishing details */
