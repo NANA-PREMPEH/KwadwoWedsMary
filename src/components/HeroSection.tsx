@@ -56,18 +56,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
       <div className="relative max-w-4xl mx-auto text-center">
         
-        {/* Top Kicker & Color Indicator */}
-        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 glass rounded-full border border-[#C85A17]/30 shadow-xs mb-5">
-          <div className="flex items-center -space-x-1">
-            <span className="w-3 h-3 rounded-full bg-[#C85A17] ring-1 ring-white" title="Burnt Orange" />
-            <span className="w-3 h-3 rounded-full bg-[#0F5132] ring-1 ring-white" title="Emerald Green" />
-            <span className="w-3 h-3 rounded-full bg-white border border-stone-300 ring-1 ring-white" title="Crisp White" />
-          </div>
-          <span className="text-[11px] uppercase tracking-[0.25em] font-sans font-semibold text-[#2c241d]">
-            Palette: Burnt Orange · Emerald Green · White
-          </span>
-        </div>
-
         {/* Couple Names Headline */}
         <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-normal text-[#2b241e] tracking-tight leading-[1.15] mb-4">
           <span className="block sm:inline">{details.partnerOne}</span>
@@ -152,6 +140,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {details.ceremonyVenue.city}, {details.ceremonyVenue.country}
             </p>
           </div>
+        </div>
+
+        {/* Color palette */}
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 glass rounded-full border border-[#C85A17]/30 shadow-xs mt-5">
+          <div className="flex items-center -space-x-1">
+            <span className="w-3 h-3 rounded-full bg-[#C85A17] ring-1 ring-white" title="Burnt Orange" />
+            <span className="w-3 h-3 rounded-full bg-[#0F5132] ring-1 ring-white" title="Emerald Green" />
+            <span className="w-3 h-3 rounded-full bg-white border border-stone-300 ring-1 ring-white" title="Crisp White" />
+          </div>
+          <span className="text-[11px] uppercase tracking-[0.25em] font-sans font-semibold text-[#2c241d]">
+            Palette: Burnt Orange · Emerald Green · White
+          </span>
         </div>
 
         {/* CTA Buttons */}
