@@ -85,7 +85,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 {details.ceremonyVenue.address}
               </span>
               <span className="font-sans tracking-[0.25em] uppercase text-[11px] font-semibold bg-black/40 backdrop-blur-md px-3.5 py-1 rounded-full border border-white/30 shadow-sm">
-                19 · IX · MMXXVI
+                14 · XI · MMXXVI
               </span>
             </div>
           </div>
