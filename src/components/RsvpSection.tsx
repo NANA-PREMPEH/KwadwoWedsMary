@@ -7,9 +7,10 @@ import { CheckCircle2, Heart, Music, Utensils, Send, Edit3, Printer, Sparkles, U
 interface RsvpSectionProps {
   onAddRsvp: (entry: RsvpEntry) => void;
   existingRsvps: RsvpEntry[];
+  rsvpExtrasVisible: boolean;
 }
 
-export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsvps }) => {
+export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsvps, rsvpExtrasVisible }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -73,10 +74,10 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
       guestNames: attending === 'accepted' 
         ? (partySize > 1 && plusOneName.trim() ? [fullName.trim(), plusOneName.trim()] : [fullName.trim()])
         : [],
-      dietaryRestrictions: attending === 'accepted' ? dietary : [],
-      dietaryNotes: dietaryNotes.trim() || undefined,
-      songRequest: songRequest.trim() || undefined,
-      message: message.trim() || undefined,
+      dietaryRestrictions: attending === 'accepted' && rsvpExtrasVisible ? dietary : [],
+      dietaryNotes: rsvpExtrasVisible ? dietaryNotes.trim() || undefined : undefined,
+      songRequest: rsvpExtrasVisible ? songRequest.trim() || undefined : undefined,
+      message: rsvpExtrasVisible ? message.trim() || undefined : undefined,
       submittedAt: new Date().toISOString(),
     };
 
@@ -383,6 +384,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
                   )}
                 </div>
 
+                {rsvpExtrasVisible && <>
                 {/* Dietary restrictions */}
                 <div>
                   <label className="block text-xs uppercase tracking-[0.16em] font-semibold text-[#5c4e42] mb-2 font-sans flex items-center gap-1.5">
@@ -433,12 +435,13 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
                     className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm text-[#2b241e]"
                   />
                 </div>
+                </>}
 
               </div>
             )}
 
             {/* Personal Blessing Note */}
-            <div>
+            {rsvpExtrasVisible && <div>
               <label className="block text-xs uppercase tracking-[0.16em] font-semibold text-[#5c4e42] mb-1 font-sans">
                 A Note or Blessing for Kwadwo & Mary
               </label>
@@ -449,7 +452,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
                 onChange={(e) => setMessage(e.target.value)}
                 className="w-full px-3.5 py-2.5 rounded-xl glass-input text-sm text-[#2b241e]"
               />
-            </div>
+            </div>}
 
             {/* Submit Button */}
             <button

@@ -521,6 +521,23 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                   </button>
                 </div>
 
+                <div className="flex items-center justify-between gap-4 rounded-xl border border-[#0F5132]/20 bg-white p-4">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-[#0F5132]">RSVP extras</p>
+                    <p className="mt-1 text-xs text-stone-500">Show dish preferences, song requests, and the note or blessing field to guests.</p>
+                  </div>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={details.rsvpExtrasVisible !== false}
+                    onClick={() => onUpdateDetails({ ...details, rsvpExtrasVisible: details.rsvpExtrasVisible === false })}
+                    className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${details.rsvpExtrasVisible !== false ? 'bg-[#0F5132]' : 'bg-stone-300'}`}
+                  >
+                    <span className={`absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow transition-transform ${details.rsvpExtrasVisible !== false ? 'translate-x-5' : 'translate-x-0'}`} />
+                    <span className="sr-only">Toggle RSVP extras visibility</span>
+                  </button>
+                </div>
+
                 <div>
                   <label className="block text-xs uppercase tracking-wider font-semibold text-[#5c4e42] mb-1 font-sans">
                     Couple Monogram Display Names

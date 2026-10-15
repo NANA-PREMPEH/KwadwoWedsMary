@@ -4,6 +4,7 @@ export const INITIAL_WEDDING_DETAILS: WeddingDetails = {
   seatingChartVisible: true,
   musicPageVisible: true,
   wishesPageVisible: true,
+  rsvpExtrasVisible: true,
   coupleNames: 'Kwadwo Akomani Preko & Mary Adubeah Yeboah',
   partnerOne: 'Kwadwo Akomani Preko',
   partnerTwo: 'Mary Adubeah Yeboah',

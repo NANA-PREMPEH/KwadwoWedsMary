@@ -553,6 +553,7 @@ export default function App() {
         {activeSection === 'rsvp' && <RsvpSection
           onAddRsvp={handleAddRsvp}
           existingRsvps={rsvps}
+          rsvpExtrasVisible={details.rsvpExtrasVisible !== false}
         />}
 
         {activeSection === 'seating-chart' && seatingChartVisible && <SeatingChartSection
