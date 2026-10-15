@@ -211,13 +211,6 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 }}
               />
 
-              {/* Envelope Flap Header Typography: Couple Names */}
-              <div className="absolute top-[18%] sm:top-[20%] inset-x-4 text-center z-20 pointer-events-none">
-                <div className="font-serif italic text-[#0F5132] text-sm sm:text-base font-semibold tracking-wide leading-tight">
-                  {coupleNames}
-                </div>
-              </div>
-
               {/* Center Wax Seal Area with Warm Burnt Orange Ambient Glow */}
               <div className="relative z-20 flex flex-col items-center justify-center mt-12 sm:mt-14">
                 
