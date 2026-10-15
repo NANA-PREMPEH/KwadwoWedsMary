@@ -440,7 +440,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ onAddRsvp, existingRsv
             {/* Personal Blessing Note */}
             <div>
               <label className="block text-xs uppercase tracking-[0.16em] font-semibold text-[#5c4e42] mb-1 font-sans">
-                A Note or Blessing for Julian & Eleanor
+                A Note or Blessing for Kwadwo & Mary
               </label>
               <textarea
                 rows={3}
