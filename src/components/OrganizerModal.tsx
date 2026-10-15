@@ -421,9 +421,21 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
                     <img src={photo.url} alt="Guest submission" className="h-16 w-16 rounded-lg object-cover" />
                     <div className="min-w-0 flex-1"><p className="truncate text-xs font-semibold text-[#0F5132]">{photo.uploaderName}</p><p className="mt-1 line-clamp-2 text-[11px] text-stone-500">{photo.caption}</p>
                       <div className="mt-2 flex flex-wrap gap-1.5 text-[10px]">
-                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'approved' })} className="cursor-pointer rounded-lg border border-emerald-200 bg-emerald-100 px-2.5 py-1.5 font-semibold text-emerald-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-emerald-600 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Keep public</button>
-                        <button onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'hidden' })} className="cursor-pointer rounded-lg border border-stone-200 bg-stone-100 px-2.5 py-1.5 font-semibold text-stone-700 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-stone-700 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Hide</button>
-                        <button onClick={() => onUpdatePhoto({ ...photo, isFeatured: !photo.isFeatured })} className="cursor-pointer rounded-lg border border-amber-200 bg-amber-100 px-2.5 py-1.5 font-semibold text-amber-800 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#C85A17] hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">{photo.isFeatured ? 'Unfeature' : 'Feature'}</button>
+                        <button
+                          onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'approved' })}
+                          aria-pressed={photo.moderationStatus !== 'hidden'}
+                          className={`cursor-pointer rounded-lg border px-2.5 py-1.5 font-semibold shadow-sm transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${photo.moderationStatus !== 'hidden' ? 'border-emerald-700 bg-emerald-700 text-white ring-2 ring-emerald-300 ring-offset-1' : 'border-stone-300 bg-white text-stone-600 hover:border-emerald-500 hover:text-emerald-700'}`}
+                        >{photo.moderationStatus !== 'hidden' ? '✓ Public' : 'Make public'}</button>
+                        <button
+                          onClick={() => onUpdatePhoto({ ...photo, moderationStatus: 'hidden' })}
+                          aria-pressed={photo.moderationStatus === 'hidden'}
+                          className={`cursor-pointer rounded-lg border px-2.5 py-1.5 font-semibold shadow-sm transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${photo.moderationStatus === 'hidden' ? 'border-stone-800 bg-stone-800 text-white ring-2 ring-stone-400 ring-offset-1' : 'border-stone-300 bg-white text-stone-600 hover:border-stone-600 hover:text-stone-900'}`}
+                        >{photo.moderationStatus === 'hidden' ? '✓ Hidden' : 'Hide'}</button>
+                        <button
+                          onClick={() => onUpdatePhoto({ ...photo, isFeatured: !photo.isFeatured })}
+                          aria-pressed={Boolean(photo.isFeatured)}
+                          className={`cursor-pointer rounded-lg border px-2.5 py-1.5 font-semibold shadow-sm transition-all hover:-translate-y-0.5 active:translate-y-0 active:scale-95 ${photo.isFeatured ? 'border-[#A0420B] bg-[#C85A17] text-white ring-2 ring-orange-300 ring-offset-1' : 'border-stone-300 bg-white text-stone-600 hover:border-[#C85A17] hover:text-[#A0420B]'}`}
+                        >{photo.isFeatured ? '★ Featured' : 'Feature'}</button>
                         <button onClick={() => { if (window.confirm(`Permanently delete this photo from ${photo.uploaderName}?`)) onDeletePhoto(photo.id); }} className="cursor-pointer rounded-lg border border-rose-200 bg-rose-50 px-2.5 py-1.5 font-semibold text-rose-700 shadow-sm transition-all hover:-translate-y-0.5 hover:bg-rose-600 hover:text-white hover:shadow-md active:translate-y-0 active:scale-95">Delete</button>
                       </div></div>
                   </div>
