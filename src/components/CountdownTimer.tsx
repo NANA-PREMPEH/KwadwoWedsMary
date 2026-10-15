@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Sparkles } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface CountdownTimerProps {
   targetDate: string;
   formattedDate: string;
-  venueName: string;
 }
 
-export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, formattedDate, venueName }) => {
+export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, formattedDate }) => {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -109,11 +108,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, form
         </div>
 
         {/* Bottom Banner Note */}
-        <div className="mt-6 pt-4 border-t border-[#0F5132]/15 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-600 font-sans gap-2">
-          <div className="flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-[#C85A17]" />
-            <span className="font-semibold text-[#0F5132]">{venueName}</span>
-          </div>
+        <div className="mt-6 pt-4 border-t border-[#0F5132]/15 flex items-center justify-center sm:justify-end text-xs text-stone-600 font-sans">
           <span className="text-stone-500 text-[11px] tracking-wide">
             {timeLeft.days} days and {timeLeft.hours} hours remaining
           </span>
