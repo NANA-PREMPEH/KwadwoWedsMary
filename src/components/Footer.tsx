@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ details }) => {
 
         {/* Wedding Hashtag */}
         <div className="inline-block px-5 py-1.5 rounded-full glass border border-[#C85A17]/40 text-[#E06D28] text-xs font-mono font-bold tracking-wide shadow-sm">
-          {details.hashtag}
+          #KMLovestory2026
         </div>
 
         <p className="font-serif italic text-sm text-[#B4D0C2] max-w-md mx-auto">
