@@ -5,6 +5,16 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       const contentKey = typeof req.query.key === 'string' ? req.query.key : 'wedding-details';
+
+      if (contentKey === 'seating-tables' && !verifyAdminSession(req)) {
+        const { rows: settingsRows } = await pool.query(
+          "SELECT content_value FROM site_content WHERE content_key = 'wedding-details'"
+        );
+        if (settingsRows[0]?.content_value?.seatingChartVisible === false) {
+          return res.status(404).json({ error: 'The seating chart is not currently available.' });
+        }
+      }
+
       const { rows } = await pool.query('SELECT content_value FROM site_content WHERE content_key = $1', [contentKey]);
       return res.status(200).json({ content: rows[0]?.content_value ?? null });
     }

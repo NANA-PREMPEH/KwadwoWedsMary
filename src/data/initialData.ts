@@ -1,6 +1,7 @@
 import { WeddingDetails, ScheduleItem, RsvpEntry, WeddingPhoto, GuestbookEntry, FaqItem, SongSuggestion, SeatingTable } from '../types/wedding';
 
 export const INITIAL_WEDDING_DETAILS: WeddingDetails = {
+  seatingChartVisible: true,
   coupleNames: 'Kwadwo Akomani Preko & Mary Adubeah Yeboah',
   partnerOne: 'Kwadwo Akomani Preko',
   partnerTwo: 'Mary Adubeah Yeboah',

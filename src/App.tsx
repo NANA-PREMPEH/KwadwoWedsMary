@@ -144,6 +144,7 @@ export default function App() {
   const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [activeSection, setActiveSection] = useState(getPageFromHash);
+  const seatingChartVisible = details.seatingChartVisible !== false;
 
   // Check if first-time visitor to pop the envelope
   useEffect(() => {
@@ -153,6 +154,12 @@ export default function App() {
       sessionStorage.setItem('aeterna_envelope_seen', 'true');
     }
   }, []);
+
+  useEffect(() => {
+    if (!seatingChartVisible && activeSection === 'seating-chart') {
+      window.location.hash = '/couple';
+    }
+  }, [activeSection, seatingChartVisible]);
 
   // Save changes to localStorage
   useEffect(() => {
@@ -441,7 +448,8 @@ export default function App() {
   };
 
   const navigateTo = (page: string) => {
-    const nextPage = PAGE_IDS.includes(page as typeof PAGE_IDS[number]) ? page : 'couple';
+    const requestedPage = PAGE_IDS.includes(page as typeof PAGE_IDS[number]) ? page : 'couple';
+    const nextPage = requestedPage === 'seating-chart' && !seatingChartVisible ? 'couple' : requestedPage;
     if (window.location.hash === `#/${nextPage}`) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
@@ -478,6 +486,7 @@ export default function App() {
         onNavigate={navigateTo}
         isDarkMode={isDarkMode}
         onToggleDarkMode={() => setIsDarkMode((current) => !current)}
+        seatingChartVisible={seatingChartVisible}
       />
 
       {showRsvpReminder && (
@@ -535,7 +544,7 @@ export default function App() {
           existingRsvps={rsvps}
         />}
 
-        {activeSection === 'seating-chart' && <SeatingChartSection
+        {activeSection === 'seating-chart' && seatingChartVisible && <SeatingChartSection
           tables={tables}
           rsvps={rsvps}
           currentUserRsvp={currentUserRsvp}

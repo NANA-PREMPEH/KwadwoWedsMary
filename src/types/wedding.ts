@@ -1,4 +1,5 @@
 export interface WeddingDetails {
+  seatingChartVisible?: boolean;
   coupleNames: string;
   partnerOne: string;
   partnerTwo: string;
