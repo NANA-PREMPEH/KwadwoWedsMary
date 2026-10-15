@@ -300,6 +300,33 @@ html.dark [class*="bg-stone-100"] {
   background-color: rgba(12, 57, 41, 0.94) !important;
 }
 
+html.dark .admin-login-panel {
+  background: linear-gradient(145deg, rgba(12, 57, 41, 0.98), rgba(4, 27, 19, 0.99)) !important;
+  border-color: rgba(231, 197, 106, 0.55) !important;
+  color: #f7f0e3;
+}
+
+html.dark .admin-login-panel h2,
+html.dark .admin-login-panel label span {
+  color: #fff8ea !important;
+}
+
+html.dark .admin-login-panel p.text-stone-600 {
+  color: #cddbd3 !important;
+}
+
+html.dark .admin-login-input,
+html.dark .admin-login-input:-webkit-autofill,
+html.dark .admin-login-input:-webkit-autofill:hover,
+html.dark .admin-login-input:-webkit-autofill:focus {
+  background-color: rgba(255, 248, 227, 0.09) !important;
+  border-color: rgba(231, 197, 106, 0.48) !important;
+  color: #fff8ea !important;
+  -webkit-text-fill-color: #fff8ea !important;
+  -webkit-box-shadow: 0 0 0 1000px #0d3a2a inset !important;
+  caret-color: #fff8ea;
+}
+
 /* Editorial finishing details */
 button, a {
   -webkit-tap-highlight-color: transparent;
