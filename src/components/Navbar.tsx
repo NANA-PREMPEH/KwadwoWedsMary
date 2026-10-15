@@ -13,6 +13,7 @@ interface NavbarProps {
   isDarkMode: boolean;
   onToggleDarkMode: () => void;
   seatingChartVisible: boolean;
+  musicPageVisible: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -24,7 +25,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   isDarkMode,
   onToggleDarkMode,
-  seatingChartVisible
+  seatingChartVisible,
+  musicPageVisible
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -44,7 +46,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: 'Live Photos', id: 'photos' },
     { label: 'Wishes', id: 'guestbook' },
     { label: 'FAQ & Registry', id: 'faq' },
-  ].filter((item) => item.id !== 'seating-chart' || seatingChartVisible);
+  ].filter((item) =>
+    (item.id !== 'seating-chart' || seatingChartVisible)
+    && (item.id !== 'music-player' || musicPageVisible)
+  );
 
   return (
     <header className="sticky top-0 z-40 bg-[#FDFBF7]/80 backdrop-blur-xl border-b border-[#C85A17]/20 shadow-[0_4px_30px_rgba(15,81,50,0.04)] transition-all">

@@ -2,6 +2,7 @@ import { WeddingDetails, ScheduleItem, RsvpEntry, WeddingPhoto, GuestbookEntry, 
 
 export const INITIAL_WEDDING_DETAILS: WeddingDetails = {
   seatingChartVisible: true,
+  musicPageVisible: true,
   coupleNames: 'Kwadwo Akomani Preko & Mary Adubeah Yeboah',
   partnerOne: 'Kwadwo Akomani Preko',
   partnerTwo: 'Mary Adubeah Yeboah',
