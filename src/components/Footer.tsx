@@ -53,6 +53,13 @@ export const Footer: React.FC<FooterProps> = ({ details }) => {
           </button>
         </div>
 
+        <blockquote className="pt-2 font-serif text-[#E7C56A]">
+          <p className="text-lg italic">“He makes all things beautiful in His time”</p>
+          <cite className="mt-1 block text-xs not-italic uppercase tracking-[0.2em] text-[#B4D0C2]">
+            Eccl 3:11
+          </cite>
+        </blockquote>
+
       </div>
     </footer>
   );
