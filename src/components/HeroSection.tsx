@@ -126,7 +126,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </p>
           </div>
 
-          <div className="p-5 glass glass-hover rounded-2xl border border-[#C85A17]/30 shadow-xs">
+          <button
+            type="button"
+            onClick={onScrollToVenue}
+            className="w-full p-5 glass glass-hover rounded-2xl border border-[#C85A17]/30 shadow-xs text-left cursor-pointer transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C85A17] focus-visible:ring-offset-2"
+            aria-label={`View venue details for ${details.ceremonyVenue.name}`}
+          >
             <div className="flex items-center gap-2 text-[#C85A17] text-xs font-bold uppercase tracking-[0.2em] mb-1.5 font-sans">
               <MapPin className="w-4 h-4 text-[#C85A17]" />
               <span>Where</span>
@@ -137,7 +142,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <p className="text-xs text-stone-600 mt-0.5 font-sans">
               {details.ceremonyVenue.city}, {details.ceremonyVenue.country}
             </p>
-          </div>
+          </button>
         </div>
 
         {/* Color palette */}
