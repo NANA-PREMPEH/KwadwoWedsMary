@@ -121,10 +121,9 @@ export const InteractiveVenueMap: React.FC = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
 
-  const [activeSiteId, setActiveSiteId] = useState<string>('site-ceremony');
   const [filterType, setFilterType] = useState<'all' | VenueSiteType>('all');
 
-  const activeSite = VENUE_SITES.find((s) => s.id === activeSiteId) || VENUE_SITES[0];
+  const activeSite = VENUE_SITES[0];
 
   // Initialize Static Non-Interactive Leaflet Map
   useEffect(() => {
@@ -220,15 +219,6 @@ export const InteractiveVenueMap: React.FC = () => {
       }
     };
   }, []);
-
-  const handleSelectSite = (site: VenueSite) => {
-    setActiveSiteId(site.id);
-  };
-
-  const filteredSites = VENUE_SITES.filter((site) => {
-    if (filterType === 'all') return true;
-    return site.type === filterType;
-  });
 
   return (
     <div className="w-full space-y-6">
@@ -431,29 +421,6 @@ export const InteractiveVenueMap: React.FC = () => {
                 <span>Open in Google Maps</span>
                 <ExternalLink className="w-3 h-3 ml-0.5" />
               </a>
-            </div>
-          </div>
-
-          {/* Quick Location Switcher Buttons */}
-          <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-wider text-stone-500 font-bold block mb-2 font-sans">
-              Select Site to View Details:
-            </span>
-            <div className="grid grid-cols-2 gap-1.5">
-              {filteredSites.map((site) => (
-                <button
-                  key={site.id}
-                  onClick={() => handleSelectSite(site)}
-                  className={`p-2 rounded-xl border text-left text-xs transition-all cursor-pointer ${
-                    site.id === activeSiteId
-                      ? 'border-[#0F5132] bg-[#0F5132]/10 text-[#0F5132] font-bold shadow-2xs'
-                      : 'border-stone-200 text-stone-600 hover:border-[#C85A17]'
-                  }`}
-                >
-                  <span className="truncate block font-serif text-sm">{site.name.split('—')[0].trim()}</span>
-                  <span className="text-[10px] text-stone-400 capitalize block">{site.type}</span>
-                </button>
-              ))}
             </div>
           </div>
 
