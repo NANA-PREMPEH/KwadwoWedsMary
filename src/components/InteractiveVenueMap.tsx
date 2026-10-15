@@ -9,7 +9,6 @@ import {
   Navigation,
   Compass,
   ExternalLink,
-  Layers,
   Maximize2,
   ZoomIn,
   ZoomOut,
@@ -47,8 +46,8 @@ export const VENUE_SITES: VenueSite[] = [
     type: 'ceremony',
     role: 'Wedding Ceremony',
     address: 'Idyllic Moments Guest House',
-    lat: 45.9657,
-    lng: 9.2023,
+    lat: 5.6836,
+    lng: -0.20081,
     timeOrDistance: 'Saturday, November 14, 2026 · 9:00 AM',
     description: 'Join Kwadwo Akomani Preko and Mary Adubeah Yeboah as they celebrate their wedding.',
     googleMapsUrl: 'https://maps.app.goo.gl/bkBVE9oAzWUiyD5TA?g_st=iw',
@@ -124,7 +123,6 @@ export const InteractiveVenueMap: React.FC = () => {
 
   const [activeSiteId, setActiveSiteId] = useState<string>('site-ceremony');
   const [filterType, setFilterType] = useState<'all' | VenueSiteType>('all');
-  const [mapTileStyle, setMapTileStyle] = useState<'voyager' | 'osm'>('voyager');
 
   const activeSite = VENUE_SITES.find((s) => s.id === activeSiteId) || VENUE_SITES[0];
 
@@ -139,8 +137,8 @@ export const InteractiveVenueMap: React.FC = () => {
 
       // Static Map - interactions completely disabled (no dragging, zooming, scroll hijack)
       const map = L.map(mapContainerRef.current, {
-        center: [45.988, 9.228], // Framed perfectly across Tremezzo, Bellagio & Menaggio
-        zoom: 12,
+        center: [5.6836, -0.20081],
+        zoom: 16,
         zoomControl: false,
         dragging: false,
         touchZoom: false,
@@ -148,18 +146,13 @@ export const InteractiveVenueMap: React.FC = () => {
         scrollWheelZoom: false,
         boxZoom: false,
         keyboard: false,
-        attributionControl: false
+        attributionControl: true
       });
 
-      // CartoDB Voyager tiles (warm, elegant, parchment-like map styling)
-      const tileUrl =
-        mapTileStyle === 'voyager'
-          ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-          : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-      L.tileLayer(tileUrl, {
-        maxZoom: 18,
-        subdomains: 'abcd',
+      // OpenStreetMap tiles render a real street map without requiring an API key.
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; OpenStreetMap contributors',
       }).addTo(map);
 
       mapInstanceRef.current = map;
@@ -170,7 +163,7 @@ export const InteractiveVenueMap: React.FC = () => {
       }, 300);
 
       // Add custom non-interactive HTML markers matching Emerald Green & Burnt Orange theme
-      VENUE_SITES.forEach((site) => {
+      VENUE_SITES.filter((site) => site.id === 'site-ceremony').forEach((site) => {
         const isCeremony = site.type === 'ceremony';
         const isReception = site.type === 'reception';
 
@@ -227,26 +220,6 @@ export const InteractiveVenueMap: React.FC = () => {
       }
     };
   }, []);
-
-  // Update tile layer if style switches
-  useEffect(() => {
-    if (!mapInstanceRef.current) return;
-    mapInstanceRef.current.eachLayer((layer) => {
-      if (layer instanceof L.TileLayer) {
-        mapInstanceRef.current?.removeLayer(layer);
-      }
-    });
-
-    const tileUrl =
-      mapTileStyle === 'voyager'
-        ? 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-        : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-    L.tileLayer(tileUrl, {
-      maxZoom: 18,
-      subdomains: 'abcd',
-    }).addTo(mapInstanceRef.current);
-  }, [mapTileStyle]);
 
   const handleSelectSite = (site: VenueSite) => {
     setActiveSiteId(site.id);
@@ -320,14 +293,6 @@ export const InteractiveVenueMap: React.FC = () => {
             <span className="text-[11px] font-medium text-stone-700">Venue Location Overview</span>
           </div>
 
-          <button
-            onClick={() => setMapTileStyle(mapTileStyle === 'voyager' ? 'osm' : 'voyager')}
-            className="px-2.5 py-1 rounded-lg border border-stone-200 text-stone-600 hover:text-[#0F5132] hover:border-[#0F5132] transition-colors flex items-center gap-1.5 cursor-pointer bg-[#FDFBF7]"
-            title="Toggle map style"
-          >
-            <Layers className="w-3.5 h-3.5 text-[#C85A17]" />
-            <span className="text-[11px]">{mapTileStyle === 'voyager' ? 'Warm Map' : 'Clean Map'}</span>
-          </button>
         </div>
 
       </div>

@@ -102,7 +102,7 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) =>
         </div>
 
         {/* Bottom Banner Note */}
-        <div className="mt-6 pt-4 border-t border-[#0F5132]/15 flex items-center justify-center sm:justify-end text-xs text-stone-600 font-sans">
+        <div className="mt-6 pt-4 border-t border-[#0F5132]/15 flex items-center justify-center text-xs text-stone-600 font-sans text-center">
           <span className="text-stone-500 text-[11px] tracking-wide">
             {timeLeft.days} days and {timeLeft.hours} hours remaining
           </span>
