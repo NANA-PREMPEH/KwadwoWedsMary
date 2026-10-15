@@ -211,13 +211,10 @@ export const EnvelopeModal: React.FC<EnvelopeModalProps> = ({
                 }}
               />
 
-              {/* Envelope Flap Header Typography: Couple Names & Venue */}
+              {/* Envelope Flap Header Typography: Couple Names */}
               <div className="absolute top-[18%] sm:top-[20%] inset-x-4 text-center z-20 pointer-events-none">
                 <div className="font-serif italic text-[#0F5132] text-sm sm:text-base font-semibold tracking-wide leading-tight">
                   {coupleNames}
-                </div>
-                <div className="font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[#C85A17] font-semibold mt-1">
-                  {venueName} · {venueAddress}
                 </div>
               </div>
 
