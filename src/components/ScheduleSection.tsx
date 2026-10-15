@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScheduleItem } from '../types/wedding';
-import { GlassWater, HeartHandshake, Wine, Utensils, Sparkles, Music, Clock } from 'lucide-react';
+import { GlassWater, HeartHandshake, Wine, Utensils, Sparkles, Music, Clock, Camera, Users } from 'lucide-react';
 
 interface ScheduleSectionProps {
   schedule: ScheduleItem[];
@@ -24,6 +24,12 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ schedule }) =>
         return <Sparkles className={`w-5 h-5 ${colorClass}`} />;
       case 'Music':
         return <Music className={`w-5 h-5 ${colorClass}`} />;
+      case 'Camera':
+        return <Camera className={`w-5 h-5 ${colorClass}`} />;
+      case 'Users':
+        return <Users className={`w-5 h-5 ${colorClass}`} />;
+      case 'Clock':
+        return <Clock className={`w-5 h-5 ${colorClass}`} />;
       default:
         return <Sparkles className={`w-5 h-5 ${colorClass}`} />;
     }
@@ -39,7 +45,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ schedule }) =>
             The Flow of Our Day
           </span>
           <h2 className="font-serif text-3xl sm:text-5xl text-[#0F5132] font-normal">
-            Order of Celebration
+            Order of Program
           </h2>
           <div className="flex items-center justify-center gap-1.5 my-4">
             <span className="w-8 h-0.5 bg-[#C85A17]" />
@@ -47,7 +53,7 @@ export const ScheduleSection: React.FC<ScheduleSectionProps> = ({ schedule }) =>
             <span className="w-8 h-0.5 bg-[#C85A17]" />
           </div>
           <p className="font-serif italic text-base text-[#524438] max-w-lg mx-auto">
-            Please plan to arrive promptly at the lakeside pier by 15:30 to enjoy welcome drinks before the processional.
+            Please join us from 9:00 AM as we celebrate a beautiful day of tradition, love, and joy.
           </p>
         </div>
 

@@ -43,50 +43,66 @@ export const INITIAL_SCHEDULE: ScheduleItem[] = [
   {
     id: 'sch-1',
     time: '09:00',
-    title: 'Wedding Ceremony',
+    title: 'Traditional Ceremony',
     location: 'Idyllic Moments Guest House',
-    description: 'Please join Kwadwo Akomani Preko and Mary Adubeah Yeboah as they celebrate their wedding.',
-    iconName: 'GlassWater'
-  },
-  {
-    id: 'sch-2',
-    time: '16:30',
-    title: 'The Ceremony & Sacred Vows',
-    location: 'The Loggia Durini Terrace',
-    description: 'Exchange of vows under the historic arches overlooking the lake. Processional by the Milan String Quartet.',
+    description: 'The traditional wedding ceremony begins.',
     iconName: 'HeartHandshake'
   },
   {
+    id: 'sch-2',
+    time: '11:30',
+    title: 'Wedding Photos',
+    location: 'Idyllic Moments Guest House',
+    description: 'Wedding party and family photographs.',
+    iconName: 'Camera'
+  },
+  {
     id: 'sch-3',
-    time: '17:45',
-    title: 'Sunset Aperitivo & Live Jazz',
-    location: 'Belvedere Lawn & Lemon Grove',
-    description: 'Handcrafted cocktails, truffled arancini, crudo di mare, and Italian charcuterie accompanied by an acoustic swing trio.',
-    iconName: 'Wine'
+    time: '12:00',
+    title: 'Guest Seating for Reception',
+    location: 'Idyllic Moments Guest House',
+    description: 'Guests take their seats for the reception.',
+    iconName: 'Users'
   },
   {
     id: 'sch-4',
-    time: '19:30',
-    title: 'Four-Course Candlelit Gala Dinner',
-    location: 'The Glass Pavilion',
-    description: 'Gourmet Northern Italian cuisine paired with reserve Barolo and Franciacorta wines, followed by family toasts.',
-    iconName: 'Utensils'
-  },
-  {
-    id: 'sch-5',
-    time: '22:00',
-    title: 'Cake Cutting & First Dance',
-    location: 'Grand Verandah overlooking the Lake',
-    description: 'Traditional Millefoglie cake assembled live with fresh wild strawberries, followed by Julian & Eleanor’s first dance.',
+    time: '12:30',
+    title: 'Exchange of Vows & Rings',
+    location: 'Idyllic Moments Guest House',
+    description: 'Kwadwo and Mary exchange their vows and rings.',
     iconName: 'Sparkles'
   },
   {
+    id: 'sch-5',
+    time: '13:00',
+    title: 'Toasts 🥂',
+    location: 'Idyllic Moments Guest House',
+    description: 'A celebratory toast to the newlyweds.',
+    iconName: 'Wine'
+  },
+  {
     id: 'sch-6',
-    time: '22:45 – Late',
-    title: 'Afterparty & Midnight Gelato',
-    location: 'The Historic Cellar & Terrace',
-    description: 'DJ sets, espresso martini bar, late-night Neapolitan wood-fired pizza and artisanal gelato cart under the stars.',
+    time: '13:15',
+    title: 'Lunch 🥙',
+    location: 'Idyllic Moments Guest House',
+    description: 'Lunch is served to all guests.',
+    iconName: 'Utensils'
+  },
+  {
+    id: 'sch-7',
+    time: '14:00',
+    title: 'Dancing 💃🏼🕺🏼',
+    location: 'Idyllic Moments Guest House',
+    description: 'The dance floor opens for the celebration.',
     iconName: 'Music'
+  },
+  {
+    id: 'sch-8',
+    time: '15:00',
+    title: 'End of Day',
+    location: 'Idyllic Moments Guest House',
+    description: 'The wedding programme comes to a close.',
+    iconName: 'Clock'
   }
 ];
 
