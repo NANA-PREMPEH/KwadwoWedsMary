@@ -43,12 +43,10 @@ export const Footer: React.FC<FooterProps> = ({ details }) => {
           "With love and boundless gratitude for your presence in our journey."
         </p>
 
-        <div className="pt-6 border-t border-[#134E35] flex flex-col sm:flex-row items-center justify-between text-xs text-[#8AAFA0] font-sans">
-          <span>Aeterna Wedding Experience · Emerald Green, Burnt Orange & White Theme</span>
-          
+        <div className="pt-6 border-t border-[#134E35] flex items-center justify-center sm:justify-end text-xs text-[#8AAFA0] font-sans">
           <button
             onClick={scrollToTop}
-            className="mt-3 sm:mt-0 flex items-center gap-1.5 glass glass-hover px-3 py-1 rounded-full border border-[#C85A17]/30 hover:text-white transition-all cursor-pointer text-[#E06D28] font-medium"
+            className="flex items-center gap-1.5 glass glass-hover px-3 py-1 rounded-full border border-[#C85A17]/30 hover:text-white transition-all cursor-pointer text-[#E06D28] font-medium"
           >
             <span>Return to top</span>
             <ArrowUp className="w-3.5 h-3.5" />
