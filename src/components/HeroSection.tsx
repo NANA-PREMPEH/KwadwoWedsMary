@@ -108,7 +108,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="mt-10">
           <CountdownTimer
             targetDate={details.targetDateTime}
-            formattedDate={details.date}
           />
         </div>
 

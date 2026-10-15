@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Clock } from 'lucide-react';
 
 interface CountdownTimerProps {
   targetDate: string;
-  formattedDate: string;
 }
 
-export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, formattedDate }) => {
+export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
@@ -69,10 +67,6 @@ export const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, form
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-[#C85A17] font-sans font-semibold tracking-wide">
-            <Clock className="w-3.5 h-3.5" />
-            <span>{formattedDate}</span>
-          </div>
         </div>
 
         {/* Days, Hours, and Minutes 3-Column Prominent Grid */}
