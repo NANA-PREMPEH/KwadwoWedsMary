@@ -146,6 +146,7 @@ export default function App() {
   const [activeSection, setActiveSection] = useState(getPageFromHash);
   const seatingChartVisible = details.seatingChartVisible !== false;
   const musicPageVisible = details.musicPageVisible !== false;
+  const wishesPageVisible = details.wishesPageVisible !== false;
 
   // Check if first-time visitor to pop the envelope
   useEffect(() => {
@@ -157,10 +158,14 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if ((!seatingChartVisible && activeSection === 'seating-chart') || (!musicPageVisible && activeSection === 'music-player')) {
+    if (
+      (!seatingChartVisible && activeSection === 'seating-chart')
+      || (!musicPageVisible && activeSection === 'music-player')
+      || (!wishesPageVisible && activeSection === 'guestbook')
+    ) {
       window.location.hash = '/couple';
     }
-  }, [activeSection, seatingChartVisible, musicPageVisible]);
+  }, [activeSection, seatingChartVisible, musicPageVisible, wishesPageVisible]);
 
   // Save changes to localStorage
   useEffect(() => {
@@ -451,7 +456,8 @@ export default function App() {
   const navigateTo = (page: string) => {
     const requestedPage = PAGE_IDS.includes(page as typeof PAGE_IDS[number]) ? page : 'couple';
     const pageIsHidden = (requestedPage === 'seating-chart' && !seatingChartVisible)
-      || (requestedPage === 'music-player' && !musicPageVisible);
+      || (requestedPage === 'music-player' && !musicPageVisible)
+      || (requestedPage === 'guestbook' && !wishesPageVisible);
     const nextPage = pageIsHidden ? 'couple' : requestedPage;
     if (window.location.hash === `#/${nextPage}`) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -491,6 +497,7 @@ export default function App() {
         onToggleDarkMode={() => setIsDarkMode((current) => !current)}
         seatingChartVisible={seatingChartVisible}
         musicPageVisible={musicPageVisible}
+        wishesPageVisible={wishesPageVisible}
       />
 
       {showRsvpReminder && (
@@ -570,7 +577,7 @@ export default function App() {
           onLikePhoto={handleLikePhoto}
         />}
 
-        {activeSection === 'guestbook' && <GuestbookSection
+        {activeSection === 'guestbook' && wishesPageVisible && <GuestbookSection
           entries={guestbook}
           onAddEntry={handleAddGuestbookEntry}
         />}

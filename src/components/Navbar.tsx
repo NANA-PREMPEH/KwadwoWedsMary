@@ -14,6 +14,7 @@ interface NavbarProps {
   onToggleDarkMode: () => void;
   seatingChartVisible: boolean;
   musicPageVisible: boolean;
+  wishesPageVisible: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -26,7 +27,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   isDarkMode,
   onToggleDarkMode,
   seatingChartVisible,
-  musicPageVisible
+  musicPageVisible,
+  wishesPageVisible
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -49,6 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   ].filter((item) =>
     (item.id !== 'seating-chart' || seatingChartVisible)
     && (item.id !== 'music-player' || musicPageVisible)
+    && (item.id !== 'guestbook' || wishesPageVisible)
   );
 
   return (
