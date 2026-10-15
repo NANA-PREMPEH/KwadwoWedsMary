@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RsvpEntry, SeatingTable, WeddingAnnouncement, WeddingDetails, SongSuggestion, WeddingPhoto } from '../types/wedding';
-import { X, Users, CheckCircle, XCircle, Utensils, Music, Download, Search, Settings, ShieldCheck, HeartHandshake, LogOut, Bell } from 'lucide-react';
+import { X, Users, CheckCircle, XCircle, Utensils, Music, Download, Search, Settings, ShieldCheck, HeartHandshake, LogOut, Bell, Camera, Megaphone, UserCheck, UserRoundX } from 'lucide-react';
 
 interface OrganizerDashboardProps {
   isOpen: boolean;
@@ -148,36 +148,49 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
     })));
   };
 
+  const adminTabs = [
+    { id: 'guests', label: 'Guests', icon: Users, badge: filteredRsvps.length },
+    { id: 'seating', label: 'Seating', icon: HeartHandshake, badge: undefined },
+    { id: 'dietary', label: 'Catering', icon: Utensils, badge: undefined },
+    { id: 'playlist', label: 'Music', icon: Music, badge: songRequests.length },
+    { id: 'photos', label: 'Photos', icon: Camera, badge: pendingPhotos.length },
+    { id: 'announcements', label: 'Updates', icon: Megaphone, badge: undefined },
+    { id: 'settings', label: 'Settings', icon: Settings, badge: undefined },
+  ] as const;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xl animate-fade-in">
-      <div className="w-full max-w-6xl max-h-[92vh] flex flex-col overflow-hidden rounded-[2rem] border border-[#E7C56A]/35 bg-[#FDFBF7]/95 shadow-[0_30px_90px_rgba(0,0,0,0.42)] ring-1 ring-white/40 backdrop-blur-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#071a12]/75 p-2 backdrop-blur-md animate-fade-in sm:p-5">
+      <div role="dialog" aria-modal="true" aria-labelledby="organizer-dashboard-title" className="flex max-h-[96vh] w-full max-w-7xl flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#F7F8F5] shadow-[0_32px_100px_rgba(0,0,0,0.45)] sm:max-h-[92vh] sm:rounded-[1.75rem]">
         
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[#0F5132]/10 bg-white/75 p-5 sm:p-7">
-          <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-[#0F5132] text-white rounded-xl border border-[#C85A17]/40 shadow-xs">
-              <ShieldCheck className="w-5 h-5 text-[#E06D28]" />
+        <div className="flex items-center justify-between border-b border-[#0F5132]/10 bg-white px-4 py-4 sm:px-7 sm:py-5">
+          <div className="flex min-w-0 items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#0F5132] shadow-sm ring-1 ring-[#C85A17]/35">
+              <ShieldCheck className="h-5 w-5 text-white" />
             </div>
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#C85A17]">Private wedding operations</p>
-              <h3 className="font-serif text-xl sm:text-3xl text-[#0F5132] font-semibold">
-                Couple’s Organizer Dashboard
+            <div className="min-w-0">
+              <div className="mb-0.5 flex items-center gap-2">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C85A17]">Private administration</p>
+                <span className="hidden rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-emerald-700 sm:inline">Secure session</span>
+              </div>
+              <h3 id="organizer-dashboard-title" className="truncate font-serif text-xl font-semibold text-[#0F5132] sm:text-2xl">
+                Wedding Operations
               </h3>
-              <p className="text-xs text-stone-500 font-sans">
-                Real-time attendee stats, catering reports, and playlist manager
+              <p className="hidden text-xs text-stone-500 sm:block">
+                Guest management, event planning and content controls
               </p>
             </div>
           </div>
 
-          <div className="relative flex items-center gap-1">
-            <button onClick={() => setShowNotifications((open) => !open)} className="relative rounded-lg p-2 text-[#0F5132] transition hover:bg-[#0F5132]/10" aria-label="Pending photo notifications">
+          <div className="relative flex items-center gap-1.5">
+            <button onClick={() => setShowNotifications((open) => !open)} className="relative rounded-xl border border-stone-200 bg-white p-2.5 text-[#0F5132] shadow-sm transition hover:border-[#0F5132]/30 hover:bg-[#F4F8F5]" aria-label="Pending photo notifications">
               <Bell className="h-4 w-4" />
               {pendingPhotos.length > 0 && <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#C85A17] px-1 text-[9px] font-bold text-white">{pendingPhotos.length}</span>}
             </button>
-            <button onClick={onLogout} className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-[11px] font-semibold uppercase tracking-wide text-[#C85A17] hover:bg-[#C85A17]/10" title="Sign out of the admin portal">
+            <button onClick={onLogout} className="hidden items-center gap-1.5 rounded-xl border border-stone-200 px-3 py-2.5 text-[10px] font-bold uppercase tracking-wider text-stone-600 transition hover:border-[#C85A17]/40 hover:bg-[#C85A17]/5 hover:text-[#C85A17] sm:flex" title="Sign out of the admin portal">
               <LogOut className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Logout</span>
             </button>
-            <button onClick={onClose} className="p-2 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-200/50 cursor-pointer" aria-label="Close admin portal">
+            <button onClick={onClose} className="rounded-xl border border-stone-200 p-2.5 text-stone-500 transition hover:border-stone-300 hover:bg-stone-100 hover:text-stone-800" aria-label="Close admin portal">
               <X className="w-5 h-5" />
             </button>
             {showNotifications && <div className="absolute right-16 top-11 z-20 w-80 rounded-xl border border-[#E7C56A]/40 bg-white p-3 shadow-2xl">
@@ -188,72 +201,56 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
         </div>
 
         {/* Quick KPI stats row */}
-        <div className="grid grid-cols-2 gap-3 border-b border-[#0F5132]/10 bg-[#F6F4EF] p-4 sm:grid-cols-4 sm:p-6">
-          <div className="p-3.5 rounded-2xl glass border border-[#0F5132]/20 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-[0.16em] text-stone-500 font-sans font-medium block">Total RSVPs</span>
-            <span className="font-serif text-2xl font-bold text-[#0F5132]">{rsvps.length}</span>
+        <div className="grid grid-cols-2 gap-3 border-b border-[#0F5132]/10 bg-[#F7F8F5] p-4 sm:grid-cols-4 sm:px-7 sm:py-5">
+          <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3"><span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500">Total responses</span><Users className="h-4 w-4 text-stone-400" /></div>
+            <span className="mt-2 block font-serif text-3xl font-semibold leading-none text-[#17261f]">{rsvps.length}</span>
+            <span className="mt-2 block text-[10px] text-stone-400">All submitted RSVPs</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl glass border border-[#0F5132]/35 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-[0.16em] text-[#0F5132] font-sans font-semibold block">Confirmed Attending</span>
-            <span className="font-serif text-2xl font-bold text-[#0F5132]">{attendingList.length}</span>
+          <div className="rounded-xl border border-emerald-200/70 bg-white p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3"><span className="text-[10px] font-bold uppercase tracking-[0.15em] text-emerald-700">Confirmed</span><UserCheck className="h-4 w-4 text-emerald-600" /></div>
+            <span className="mt-2 block font-serif text-3xl font-semibold leading-none text-[#0F5132]">{attendingList.length}</span>
+            <span className="mt-2 block text-[10px] text-stone-400">Accepted invitations</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl glass border border-[#C85A17]/35 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-[0.16em] text-[#C85A17] font-sans font-semibold block">Expected Headcount</span>
-            <span className="font-serif text-2xl font-bold text-[#C85A17]">{totalHeadcount}</span>
+          <div className="rounded-xl border border-orange-200/80 bg-white p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3"><span className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#C85A17]">Headcount</span><HeartHandshake className="h-4 w-4 text-[#C85A17]" /></div>
+            <span className="mt-2 block font-serif text-3xl font-semibold leading-none text-[#C85A17]">{totalHeadcount}</span>
+            <span className="mt-2 block text-[10px] text-stone-400">Expected attendees</span>
           </div>
 
-          <div className="p-3.5 rounded-2xl glass border border-stone-200/70 shadow-2xs">
-            <span className="text-[10px] uppercase tracking-[0.16em] text-stone-500 font-sans font-medium block">Declined</span>
-            <span className="font-serif text-2xl font-bold text-stone-600">{declinedList.length}</span>
+          <div className="rounded-xl border border-stone-200 bg-white p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3"><span className="text-[10px] font-bold uppercase tracking-[0.15em] text-stone-500">Declined</span><UserRoundX className="h-4 w-4 text-stone-400" /></div>
+            <span className="mt-2 block font-serif text-3xl font-semibold leading-none text-stone-600">{declinedList.length}</span>
+            <span className="mt-2 block text-[10px] text-stone-400">Unable to attend</span>
           </div>
         </div>
 
         {/* Tabs Bar */}
-        <div className="flex overflow-x-auto border-b border-[#0F5132]/15 bg-white px-4 text-xs uppercase tracking-wider font-sans font-medium sm:px-6">
-          <button
-            onClick={() => setActiveTab('guests')}
-            className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'guests' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'
-            }`}
-          >
-            Guest List ({filteredRsvps.length})
-          </button>
-          <button onClick={() => setActiveTab('seating')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'seating' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'}`}>Seating Plan</button>
-
-          <button
-            onClick={() => setActiveTab('dietary')}
-            className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'dietary' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'
-            }`}
-          >
-            Catering & Dietary
-          </button>
-
-          <button
-            onClick={() => setActiveTab('playlist')}
-            className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'playlist' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'
-            }`}
-          >
-            Song Requests ({songRequests.length})
-          </button>
-
-          <button
-            onClick={() => setActiveTab('settings')}
-            className={`py-3 px-4 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'settings' ? 'border-[#0F5132] text-[#0F5132] font-bold' : 'border-transparent text-stone-500 hover:text-[#0F5132]'
-            }`}
-          >
-            Settings
-          </button>
-          <button onClick={() => setActiveTab('photos')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'photos' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'}`}>Photos ({photos.filter((photo) => photo.moderationStatus === 'pending').length})</button>
-          <button onClick={() => setActiveTab('announcements')} className={`shrink-0 py-3 px-4 border-b-2 transition-colors cursor-pointer ${activeTab === 'announcements' ? 'border-[#C85A17] text-[#C85A17] font-bold' : 'border-transparent text-stone-500 hover:text-[#C85A17]'}`}>Announcements</button>
+        <div className="flex gap-1 overflow-x-auto border-b border-stone-200 bg-white px-3 py-2 sm:px-7" role="tablist" aria-label="Dashboard sections">
+          {adminTabs.map(({ id, label, icon: Icon, badge }) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === id}
+              onClick={() => setActiveTab(id)}
+              className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-[11px] font-semibold transition ${
+                activeTab === id
+                  ? 'bg-[#0F5132] text-white shadow-sm'
+                  : 'text-stone-500 hover:bg-stone-100 hover:text-[#0F5132]'
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              <span>{label}</span>
+              {typeof badge === 'number' && <span className={`rounded-full px-1.5 py-0.5 text-[9px] ${activeTab === id ? 'bg-white/15 text-white' : 'bg-stone-100 text-stone-500'}`}>{badge}</span>}
+            </button>
+          ))}
         </div>
 
         {/* Tab Body */}
-        <div className="p-6 overflow-y-auto flex-1">
+        <div className="flex-1 overflow-y-auto bg-[#F7F8F5] p-4 sm:p-7">
           {activeTab === 'guests' && (
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -278,7 +275,7 @@ export const OrganizerDashboard: React.FC<OrganizerDashboardProps> = ({
               </div>
 
               {/* Table */}
-              <div className="border border-[#ebdcc9] rounded-xl overflow-hidden bg-white shadow-xs">
+              <div className="overflow-x-auto rounded-xl border border-stone-200 bg-white shadow-sm">
                 <table className="w-full text-left text-xs font-sans">
                   <thead className="bg-[#f7f2ea] text-stone-600 uppercase tracking-wider border-b border-[#ebdcc9]">
                     <tr>

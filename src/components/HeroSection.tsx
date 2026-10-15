@@ -2,7 +2,7 @@ import React from 'react';
 import { WeddingDetails } from '../types/wedding';
 import { CountdownTimer } from './CountdownTimer';
 import { getGoogleCalendarUrl, downloadIcsFile } from '../utils/calendar';
-import { Calendar, MapPin, Heart, Mail, Share2, Check } from 'lucide-react';
+import { Calendar, MapPin, Heart, Mail, Share2, Check, Copy } from 'lucide-react';
 
 interface HeroSectionProps {
   details: WeddingDetails;
@@ -19,6 +19,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const [copied, setCopied] = React.useState(false);
 
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -27,9 +33,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         url: window.location.href,
       }).catch(() => {});
     } else {
-      navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      handleCopy().catch(() => {});
     }
   };
 
@@ -179,8 +183,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             className="px-4 py-3.5 glass glass-hover text-[#2c241d] border border-[#C85A17]/30 text-xs uppercase tracking-[0.18em] font-semibold font-sans rounded-xl shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-1.5"
             title="Share invitation link"
           >
-            {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4 text-stone-500" />}
-            <span className="font-sans">{copied ? 'Link Copied!' : 'Share'}</span>
+            <Share2 className="w-4 h-4 text-stone-500" />
+            <span className="font-sans">Share</span>
+          </button>
+
+          <button
+            onClick={() => handleCopy().catch(() => {})}
+            className="px-4 py-3.5 glass glass-hover text-[#2c241d] border border-[#C85A17]/30 text-xs uppercase tracking-[0.18em] font-semibold font-sans rounded-xl shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-1.5"
+            title="Copy invitation link"
+            aria-live="polite"
+          >
+            {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-stone-500" />}
+            <span className="font-sans">{copied ? 'Copied!' : 'Copy'}</span>
           </button>
         </div>
 
