@@ -2,7 +2,7 @@ import React from 'react';
 import { WeddingDetails } from '../types/wedding';
 import { CountdownTimer } from './CountdownTimer';
 import { getGoogleCalendarUrl, downloadIcsFile } from '../utils/calendar';
-import { Calendar, MapPin, Heart, Mail, Share2, Check, Copy } from 'lucide-react';
+import { Calendar, MapPin, Heart, Mail, Share2, Check } from 'lucide-react';
 
 interface HeroSectionProps {
   details: WeddingDetails;
@@ -19,12 +19,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const [copied, setCopied] = React.useState(false);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(window.location.href);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const handleShare = () => {
     if (navigator.share) {
       navigator.share({
@@ -33,7 +27,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         url: window.location.href,
       }).catch(() => {});
     } else {
-      handleCopy().catch(() => {});
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -183,19 +179,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             className="px-4 py-3.5 glass glass-hover text-[#2c241d] border border-[#C85A17]/30 text-xs uppercase tracking-[0.18em] font-semibold font-sans rounded-xl shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-1.5"
             title="Share invitation link"
           >
-            <Share2 className="w-4 h-4 text-stone-500" />
-            <span className="font-sans">Share</span>
+            {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4 text-stone-500" />}
+            <span className="font-sans">{copied ? 'Link Copied!' : 'Share'}</span>
           </button>
+        </div>
 
-          <button
-            onClick={() => handleCopy().catch(() => {})}
-            className="px-4 py-3.5 glass glass-hover text-[#2c241d] border border-[#C85A17]/30 text-xs uppercase tracking-[0.18em] font-semibold font-sans rounded-xl shadow-sm hover:shadow transition-all cursor-pointer flex items-center gap-1.5"
-            title="Copy invitation link"
-            aria-live="polite"
-          >
-            {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4 text-stone-500" />}
-            <span className="font-sans">{copied ? 'Copied!' : 'Copy'}</span>
-          </button>
+        {/* Wedding-day assistance contacts */}
+        <div className="mt-8 max-w-xl mx-auto p-6 glass glass-hover rounded-3xl border border-[#0F5132]/25 shadow-xs text-left backdrop-blur-xl">
+          <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#0F5132]/10">
+            <div className="flex items-center gap-2 text-[#0F5132]">
+              <Mail className="w-4 h-4 text-[#C85A17]" />
+              <span className="text-xs uppercase tracking-[0.2em] font-semibold font-sans">
+                Need Assistance?
+              </span>
+            </div>
+            <span className="text-xs font-bold text-[#C85A17] font-sans">Contact Us</span>
+          </div>
+
+          <p className="text-xs text-stone-600 font-sans leading-relaxed">
+            For directions or wedding-day assistance, please contact either of the coordinators below.
+          </p>
+
+          <div className="mt-3 p-2.5 rounded-xl glass border border-[#C85A17]/30 text-xs font-sans">
+            <span className="text-stone-500 block text-[10px] uppercase tracking-[0.16em]">Barnabas</span>
+            <a href="tel:+233557076150" className="text-[#C85A17] text-sm tracking-wider font-mono font-bold hover:underline">
+              055 707 6150
+            </a>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-stone-200/50 text-[11px] text-stone-400 font-sans">
+            Deborah · <a href="tel:+233542637923" className="hover:text-[#C85A17] hover:underline">054 263 7923</a>
+          </div>
         </div>
 
       </div>
